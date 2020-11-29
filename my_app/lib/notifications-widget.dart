@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/custom-drawer-widget.dart';
 
 class NotificationsWidget extends StatefulWidget {
   State<StatefulWidget> createState() {
@@ -14,12 +15,6 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text("Notifications"),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
             bottom: TabBar(
               isScrollable: true,
               tabs: [
@@ -31,6 +26,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
               ],
             ),
           ),
+          drawer: CustomDrawerWidget(),
           body: TabBarView(
             children: [
               Icon(Icons.directions_car),

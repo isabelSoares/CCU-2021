@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:my_app/gardens-widget.dart';
-import 'package:my_app/eat-widget.dart';
+// import 'package:my_app/eat-widget.dart';
 import 'package:my_app/library-widget.dart';
 import 'package:my_app/museum-widget.dart';
 import 'package:my_app/music-widget.dart';
@@ -95,7 +95,8 @@ class MenuButtonWidget extends StatelessWidget {
       case "Gardens":
         return GardensWidget();
       case "Eat":
-        return EatWidget();
+        return GardensWidget();
+      // return EatWidget();
       case "Museum":
         return MuseumWidget();
       case "Music":

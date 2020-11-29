@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'home-grid-widget.dart';
+import 'package:my_app/map-widget.dart';
+import 'for-today-widget.dart';
 import 'notifications-widget.dart';
-import 'placeholder-widget.dart';
 import 'theme.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -14,18 +14,22 @@ class _HomeWidgetState extends State<HomeWidget> {
   int _currentIndex = 1;
   final List<Widget> _children = [
     NotificationsWidget(),
-    HomeGridWidget(),
-    PlaceholderWidget(Colors.green),
+    ForTodayWidget(),
+    MapWidget(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: primaryGreen,
-          // unselectedLabelStyle: Theme.of(context).textTheme.caption,
-          onTap: onTabTapped,
+          backgroundColor: myThemeData.primaryColor,
           currentIndex: _currentIndex,
+          iconSize: 24.0,
+          onTap: onTabTapped,
+          selectedLabelStyle: myThemeData.textTheme.caption,
+          selectedItemColor: Color(0xFFFFFFFF),
+          unselectedLabelStyle: myThemeData.textTheme.caption,
+          unselectedItemColor: Color(0x77FFFFFF),
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
