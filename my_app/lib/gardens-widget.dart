@@ -85,7 +85,12 @@ class GardenInfoWidget extends StatelessWidget {
           Container(
             width: 360,
             height: 194,
-            color: Color(0xFFB9DCA9),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('./lib/images/Garden São Sebastião.PNG'),
+                fit : BoxFit.fill,
+              )
+            ),
           ),
           Text(title, style: myThemeData.textTheme.headline6),
           Text("Description", style: myThemeData.textTheme.caption),
