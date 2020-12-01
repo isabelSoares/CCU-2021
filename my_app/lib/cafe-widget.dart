@@ -42,7 +42,7 @@ class CafeInfoWidget extends StatelessWidget {
             height: 194,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('./lib/images/Cafe.PNG'),
+                image: AssetImage('./lib/images/Cafe.png'),
                 fit : BoxFit.fill,
               )
             ),
@@ -56,13 +56,7 @@ class CafeInfoWidget extends StatelessWidget {
           Row(
             children: [
               Icon(Icons.access_time, color: myThemeData.primaryColor),
-              Text("5 min", style: myThemeData.textTheme.caption),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(Icons.directions_run, color: myThemeData.primaryColor),
-              Text("200 m", style: myThemeData.textTheme.caption),
+              Text("Opened 10am - 18pm", style: myThemeData.textTheme.caption),
             ],
           ),
           RaisedButton.icon(

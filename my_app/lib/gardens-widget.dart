@@ -87,7 +87,7 @@ class GardenInfoWidget extends StatelessWidget {
             height: 194,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('./lib/images/Garden São Sebastião.PNG'),
+                image: AssetImage('./lib/images/Garden São Sebastião.png'),
                 fit : BoxFit.fill,
               )
             ),

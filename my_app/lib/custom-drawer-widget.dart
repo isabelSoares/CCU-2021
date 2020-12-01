@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_app/gardens-widget.dart';
 import 'package:my_app/cafe-widget.dart';
 import 'package:my_app/restaurant-widget.dart';
+import 'package:my_app/library-widget.dart';
 
 import 'theme.dart';
 
@@ -17,7 +18,7 @@ class CustomDrawerWidget extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(color: myThemeData.primaryColor),
-            child: Text("LeavinGulbenkian"),
+            child: Text("LivinGulbenkian"),
           ),
           ListTile(
             leading: FaIcon(FontAwesomeIcons.tree, size: 24),
@@ -70,7 +71,7 @@ class CustomDrawerWidget extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => GardensWidget()));
+                  MaterialPageRoute(builder: (context) => LibraryWidget()));
             },
           ),
         ],
