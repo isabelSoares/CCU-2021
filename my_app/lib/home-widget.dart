@@ -22,7 +22,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: myThemeData.primaryColor,
+          backgroundColor: Theme.of(context).primaryColor,
           currentIndex: _currentIndex,
           iconSize: 24.0,
           onTap: onTabTapped,
