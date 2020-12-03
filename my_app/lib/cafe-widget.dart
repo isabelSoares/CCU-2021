@@ -33,49 +33,83 @@ class CafeInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      child: Column(
         children: [
           Container(
             width: 360,
             height: 194,
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('./lib/images/Cafe.png'),
-                fit : BoxFit.fill,
-              )
+                image: DecorationImage(
+              image: AssetImage('./lib/images/Cafe.png'),
+              fit: BoxFit.fill,
+            )),
+          ),
+          Container(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child:
+                          Text(title, style: myThemeData.textTheme.headline6),
+                    ),
+                    Icon(Icons.notifications_none),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Text("Description", style: myThemeData.textTheme.caption),
+                SizedBox(height: 10),
+                Divider(),
+                SizedBox(height: 10),
+                Text("Capacity now:", style: myThemeData.textTheme.subtitle1),
+                Text(subtitle, style: myThemeData.textTheme.caption),
+                SizedBox(height: 10),
+                Divider(),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Icon(Icons.access_time, color: myThemeData.primaryColor),
+                    SizedBox(width: 8),
+                    Text("Opened 10am - 18pm",
+                        style: myThemeData.textTheme.caption),
+                  ],
+                ),
+              ],
             ),
           ),
-          Text(title, style: myThemeData.textTheme.headline6),
-          Text("Description", style: myThemeData.textTheme.caption),
-          Divider(),
-          Text("Capacity now:", style: myThemeData.textTheme.subtitle1),
-          Text(subtitle, style: myThemeData.textTheme.caption),
-          Divider(),
-          Row(
-            children: [
-              Icon(Icons.access_time, color: myThemeData.primaryColor),
-              Text("Opened 10am - 18pm", style: myThemeData.textTheme.caption),
-            ],
-          ),
-          RaisedButton.icon(
-            textColor: Color(0xFFFFFFFF),
-            color: myThemeData.accentColor,
-            label: Text("GO", style: myThemeData.textTheme.button),
-            icon: Icon(Icons.near_me),
-            onPressed: () {},
-          ),
-          RaisedButton.icon(
-            textColor: Color(0xFFFFFFFF),
-            color: myThemeData.accentColor,
-            label: Text("MENU", style: myThemeData.textTheme.button),
-            icon: Icon(Icons.local_restaurant),
-            onPressed: () {},
+          Expanded(
+            child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      RaisedButton.icon(
+                        textColor: Color(0xFFFFFFFF),
+                        color: myThemeData.accentColor,
+                        label: Text("MENU"),
+                        icon: Icon(Icons.local_restaurant),
+                        onPressed: () {},
+                      ),
+                      SizedBox(width: 8),
+                      RaisedButton.icon(
+                        textColor: Color(0xFFFFFFFF),
+                        color: myThemeData.accentColor,
+                        label: Text("GO"),
+                        icon: Icon(Icons.near_me),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                )),
           ),
         ],
       ),
     );
   }
 }
-
