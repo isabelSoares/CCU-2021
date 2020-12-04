@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/capacity-info-widget.dart';
+import 'package:my_app/common/places.dart';
 import 'package:my_app/notification-icon-widget.dart';
 import 'theme.dart';
 
-class LibraryWidget extends StatefulWidget {
-  State<StatefulWidget> createState() {
-    return _LibraryWidgetState();
-  }
-}
-
-class _LibraryWidgetState extends State<LibraryWidget> {
+class LibraryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Library"),
+        title: Text(library.type),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -22,16 +17,15 @@ class _LibraryWidgetState extends State<LibraryWidget> {
           },
         ),
       ),
-      body: LibraryInfoWidget("Library", "70%"),
+      body: LibraryInfoWidget(library),
     );
   }
 }
 
 class LibraryInfoWidget extends StatelessWidget {
-  final String title;
-  final String subtitle;
+  final Library library;
 
-  LibraryInfoWidget(this.title, this.subtitle);
+  LibraryInfoWidget(this.library);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +37,7 @@ class LibraryInfoWidget extends StatelessWidget {
             height: 194,
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage('./lib/images/Library.png'),
+              image: AssetImage(library.image),
               fit: BoxFit.fill,
             )),
           ),
@@ -56,20 +50,22 @@ class LibraryInfoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      child:
-                          Text(title, style: myThemeData.textTheme.headline6),
+                      child: Text(library.name,
+                          style: myThemeData.textTheme.headline6),
                     ),
-                    NotificationIcon(this.title),
+                    NotificationIcon(library.type),
                   ],
                 ),
                 SizedBox(height: 10),
-                Text("Description", style: myThemeData.textTheme.caption),
-                SizedBox(height: 10),
+                library.description != null
+                    ? Text(library.description,
+                        style: myThemeData.textTheme.caption)
+                    : Container(),
                 Divider(),
                 SizedBox(height: 10),
                 Text("Capacity now:", style: myThemeData.textTheme.subtitle1),
                 SizedBox(height: 10),
-                CapacityInfoWidget(40),
+                CapacityInfoWidget(library.capacity),
                 SizedBox(height: 10),
                 Divider(),
                 SizedBox(height: 10),
@@ -77,7 +73,7 @@ class LibraryInfoWidget extends StatelessWidget {
                   children: [
                     Icon(Icons.access_time, color: myThemeData.primaryColor),
                     SizedBox(width: 16),
-                    Text("Opened 09:30 - 19:00",
+                    Text(library.getOpeningString(),
                         style: myThemeData.textTheme.caption),
                   ],
                 ),
@@ -86,7 +82,8 @@ class LibraryInfoWidget extends StatelessWidget {
                   children: [
                     Icon(Icons.phone, color: myThemeData.primaryColor),
                     SizedBox(width: 16),
-                    Text("21 782 3458", style: myThemeData.textTheme.caption),
+                    Text(library.phoneNumber,
+                        style: myThemeData.textTheme.caption),
                   ],
                 ),
               ],
@@ -98,6 +95,7 @@ class LibraryInfoWidget extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(16),
                 child: RaisedButton.icon(
+                  textColor: Colors.white,
                   label: Text("GO"),
                   icon: Icon(Icons.near_me),
                   onPressed: () {},

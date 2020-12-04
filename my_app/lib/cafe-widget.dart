@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/common/places.dart';
 import 'package:my_app/capacity-info-widget.dart';
 import 'package:my_app/notification-icon-widget.dart';
 import 'theme.dart';
 
-class CafeWidget extends StatefulWidget {
-  State<StatefulWidget> createState() {
-    return _CafeWidgetState();
-  }
-}
-
-class _CafeWidgetState extends State<CafeWidget> {
+class CafeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cafe"),
+        title: Text(cafe.type),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -22,16 +17,15 @@ class _CafeWidgetState extends State<CafeWidget> {
           },
         ),
       ),
-      body: CafeInfoWidget("Cafe", "50%"),
+      body: CafeInfoWidget(cafe),
     );
   }
 }
 
 class CafeInfoWidget extends StatelessWidget {
-  final String title;
-  final String subtitle;
+  final Cafe cafe;
 
-  CafeInfoWidget(this.title, this.subtitle);
+  CafeInfoWidget(this.cafe);
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +36,11 @@ class CafeInfoWidget extends StatelessWidget {
             width: 360,
             height: 194,
             decoration: BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage('./lib/images/Cafe.png'),
-              fit: BoxFit.fill,
-            )),
+              image: DecorationImage(
+                image: AssetImage(cafe.image),
+                fit: BoxFit.fill,
+              ),
+            ),
           ),
           Container(
             padding: EdgeInsets.all(16),
@@ -56,20 +51,22 @@ class CafeInfoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      child:
-                          Text(title, style: myThemeData.textTheme.headline6),
+                      child: Text(cafe.name,
+                          style: myThemeData.textTheme.headline6),
                     ),
-                    NotificationIcon(title),
+                    NotificationIcon(cafe.type),
                   ],
                 ),
                 SizedBox(height: 10),
-                Text("Description", style: myThemeData.textTheme.caption),
-                SizedBox(height: 10),
+                cafe.description != null
+                    ? Text(cafe.description,
+                        style: myThemeData.textTheme.caption)
+                    : Container(),
                 Divider(),
                 SizedBox(height: 10),
                 Text("Capacity now:", style: myThemeData.textTheme.subtitle1),
                 SizedBox(height: 10),
-                CapacityInfoWidget(20),
+                CapacityInfoWidget(cafe.capacity),
                 SizedBox(height: 10),
                 Divider(),
                 SizedBox(height: 10),
@@ -77,7 +74,7 @@ class CafeInfoWidget extends StatelessWidget {
                   children: [
                     Icon(Icons.access_time, color: myThemeData.primaryColor),
                     SizedBox(width: 16),
-                    Text("Opened 10am - 18pm",
+                    Text(cafe.getOpeningString(),
                         style: myThemeData.textTheme.caption),
                   ],
                 ),
@@ -93,12 +90,14 @@ class CafeInfoWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       RaisedButton.icon(
+                        textColor: Colors.white,
                         label: Text("MENU"),
                         icon: Icon(Icons.local_restaurant),
                         onPressed: () {},
                       ),
                       SizedBox(width: 8),
                       RaisedButton.icon(
+                        textColor: Colors.white,
                         label: Text("GO"),
                         icon: Icon(Icons.near_me),
                         onPressed: () {},

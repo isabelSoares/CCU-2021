@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_app/new-place-notification-widget.dart';
 import 'package:my_app/common/notification.dart';
+import 'package:my_app/common/places.dart';
+import 'package:my_app/common/gardens.dart';
 import 'theme.dart';
 
 class NotificationsWidget extends StatelessWidget {

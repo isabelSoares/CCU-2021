@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/common/gardens.dart';
+import 'package:my_app/common/places.dart';
 import 'package:provider/provider.dart';
 import 'package:date_format/date_format.dart';
 import 'package:my_app/common/notification.dart';
@@ -8,6 +10,49 @@ import 'theme.dart';
 class AddPlaceNotificationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    List<Widget> listItems = [
+      Container(
+        padding: EdgeInsets.all(16),
+        child: Text("Choose a place:", style: myThemeData.textTheme.headline6),
+      ),
+    ];
+
+    for (Garden garden in gardensList) {
+      ListTile item = ListTile(
+        title: Text(garden.name),
+        trailing: Icon(Icons.chevron_right),
+        enabled: true,
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      NewPlaceNotificationWidget(garden.name)));
+        },
+      );
+
+      listItems.add(item);
+    }
+
+    for (Place place in placesList) {
+      ListTile item = ListTile(
+        title: Text(place.type),
+        trailing: Icon(Icons.chevron_right),
+        enabled: true,
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      NewPlaceNotificationWidget(place.type)));
+        },
+      );
+
+      listItems.add(item);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("New place notification"),
@@ -18,59 +63,14 @@ class AddPlaceNotificationWidget extends StatelessWidget {
           },
         ),
       ),
-      body: ListView(children: [
-        Container(
-          padding: EdgeInsets.all(16),
-          child:
-              Text("Choose a place:", style: myThemeData.textTheme.headline6),
-        ),
-        ListTile(
-          title: Text("Garden A"),
-          trailing: Icon(Icons.chevron_right),
-          enabled: true,
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        NewPlaceNotificationWidget(place: "Garden A")));
-          },
-        ),
-        ListTile(
-          title: Text("Garden B"),
-          trailing: Icon(Icons.chevron_right),
-          enabled: true,
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        NewPlaceNotificationWidget(place: "Garden B")));
-          },
-        ),
-        ListTile(
-          title: Text("Library"),
-          trailing: Icon(Icons.chevron_right),
-          enabled: true,
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        NewPlaceNotificationWidget(place: "Library")));
-          },
-        ),
-      ]),
+      body: ListView(children: listItems),
     );
   }
 }
 
 class NewPlaceNotificationWidget extends StatefulWidget {
   final String place;
-  const NewPlaceNotificationWidget({Key key, this.place}) : super(key: key);
+  NewPlaceNotificationWidget(this.place);
 
   State<StatefulWidget> createState() {
     return _NewPlaceNotificationWidgetState();
@@ -249,15 +249,21 @@ class _NewPlaceNotificationWidgetState
     var manager = context.watch<NotificationManager>();
 
     return RaisedButton.icon(
+      textColor: Colors.white,
       label: Text("DONE"),
       icon: Icon(Icons.check),
       onPressed: () {
+        if (manager.hasPlaceNotification(widget.place)) {
+          manager.togglePlaceNotification(widget.place);
+        }
+
         manager.add(NotificationPlace(
           widget.place,
           _selectedTimeFrom,
           _selectedTimeTo,
           _currentSliderValue,
         ));
+
         Navigator.pop(context);
       },
     );

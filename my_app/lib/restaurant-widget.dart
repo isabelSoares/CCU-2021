@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/capacity-info-widget.dart';
+import 'package:my_app/common/places.dart';
 import 'package:my_app/notification-icon-widget.dart';
 import 'theme.dart';
 
-class RestaurantWidget extends StatefulWidget {
-  State<StatefulWidget> createState() {
-    return _RestaurantWidgetState();
-  }
-}
-
-class _RestaurantWidgetState extends State<RestaurantWidget> {
+class RestaurantWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Restaurant"),
+        title: Text(restaurant.type),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -22,16 +17,15 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
           },
         ),
       ),
-      body: RestaurantInfoWidget("Restaurant", "50%"),
+      body: RestaurantInfoWidget(restaurant),
     );
   }
 }
 
 class RestaurantInfoWidget extends StatelessWidget {
-  final String title;
-  final String subtitle;
+  final Restaurant restaurant;
 
-  RestaurantInfoWidget(this.title, this.subtitle);
+  RestaurantInfoWidget(this.restaurant);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +37,7 @@ class RestaurantInfoWidget extends StatelessWidget {
             height: 194,
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage('lib/images/Restaurant.png'),
+              image: AssetImage(restaurant.image),
               fit: BoxFit.fill,
             )),
           ),
@@ -56,20 +50,23 @@ class RestaurantInfoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      child:
-                          Text(title, style: myThemeData.textTheme.headline6),
+                      child: Text(restaurant.name,
+                          style: myThemeData.textTheme.headline6),
                     ),
-                    NotificationIcon(title),
+                    NotificationIcon(restaurant.type),
                   ],
                 ),
                 SizedBox(height: 10),
-                Text("Description", style: myThemeData.textTheme.caption),
+                restaurant.description != null
+                    ? Text(restaurant.description,
+                        style: myThemeData.textTheme.caption)
+                    : Container(),
                 SizedBox(height: 10),
                 Divider(),
                 SizedBox(height: 10),
                 Text("Capacity now:", style: myThemeData.textTheme.subtitle1),
                 SizedBox(height: 10),
-                CapacityInfoWidget(40),
+                CapacityInfoWidget(restaurant.capacity),
                 SizedBox(height: 10),
                 Divider(),
                 SizedBox(height: 10),
@@ -77,7 +74,7 @@ class RestaurantInfoWidget extends StatelessWidget {
                   children: [
                     Icon(Icons.access_time, color: myThemeData.primaryColor),
                     SizedBox(width: 16),
-                    Text("Opened 10:00 - 18:00",
+                    Text(restaurant.getOpeningString(),
                         style: myThemeData.textTheme.caption),
                   ],
                 ),
@@ -93,12 +90,14 @@ class RestaurantInfoWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       RaisedButton.icon(
+                        textColor: Colors.white,
                         label: Text("MENU"),
                         icon: Icon(Icons.local_restaurant),
                         onPressed: () {},
                       ),
                       SizedBox(width: 8),
                       RaisedButton.icon(
+                        textColor: Colors.white,
                         label: Text("GO"),
                         icon: Icon(Icons.near_me),
                         onPressed: () {},

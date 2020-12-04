@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/capacity-info-widget.dart';
 import 'package:my_app/notification-icon-widget.dart';
+import 'package:my_app/common/gardens.dart';
 import 'theme.dart';
 
-class GardensWidget extends StatefulWidget {
-  State<StatefulWidget> createState() {
-    return _GardensWidgetState();
-  }
-}
-
-class _GardensWidgetState extends State<GardensWidget> {
+class GardensWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,58 +17,55 @@ class _GardensWidgetState extends State<GardensWidget> {
           },
         ),
       ),
-      body: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          GardenListItem("Garden A", "10%"),
-          Divider(),
-          GardenListItem("Garden B", "30%"),
-          Divider(),
-          GardenListItem("Garden C", "50%"),
-          Divider(),
-        ],
+      body: ListView.separated(
+        separatorBuilder: (context, index) => Divider(),
+        itemCount: gardensList.length,
+        itemBuilder: (context, index) => GardenListItem(gardensList[index]),
       ),
     );
   }
 }
 
 class GardenListItem extends StatelessWidget {
-  final String title;
-  final String subtitle;
+  final Garden garden;
 
-  GardenListItem(this.title, this.subtitle);
+  GardenListItem(this.garden);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        title: Text(title, style: myThemeData.textTheme.subtitle1),
-        subtitle: Text(subtitle, style: myThemeData.textTheme.caption),
+        title: Text(garden.name, style: myThemeData.textTheme.subtitle1),
+        subtitle: CapacityInfoWidget(garden.capacity),
         leading: Container(
           width: 100,
           height: 56,
-          color: Color(0xFFB9DCA9),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(garden.image),
+              fit: BoxFit.fill,
+            ),
+          ),
         ),
         enabled: true,
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => GardenInfoWidget(title, subtitle)));
+                  builder: (context) => GardenInfoWidget(garden)));
         });
   }
 }
 
 class GardenInfoWidget extends StatelessWidget {
-  final String title;
-  final String subtitle;
+  final Garden garden;
 
-  GardenInfoWidget(this.title, this.subtitle);
+  GardenInfoWidget(this.garden);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(garden.name),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -89,7 +81,7 @@ class GardenInfoWidget extends StatelessWidget {
               height: 194,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('./lib/images/Garden São Sebastião.png'),
+                  image: AssetImage(garden.image),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -103,20 +95,22 @@ class GardenInfoWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child:
-                            Text(title, style: myThemeData.textTheme.headline6),
+                        child: Text(garden.name,
+                            style: myThemeData.textTheme.headline6),
                       ),
-                      NotificationIcon(title),
+                      NotificationIcon(garden.name),
                     ],
                   ),
                   SizedBox(height: 10),
-                  Text("Description", style: myThemeData.textTheme.caption),
-                  SizedBox(height: 10),
+                  garden.description != null
+                      ? Text(garden.description,
+                          style: myThemeData.textTheme.caption)
+                      : Container(),
                   Divider(),
                   SizedBox(height: 10),
                   Text("Capacity now:", style: myThemeData.textTheme.subtitle1),
                   SizedBox(height: 10),
-                  CapacityInfoWidget(40),
+                  CapacityInfoWidget(garden.capacity),
                   SizedBox(height: 10),
                   Divider(),
                   SizedBox(height: 10),
@@ -124,7 +118,8 @@ class GardenInfoWidget extends StatelessWidget {
                     children: [
                       Icon(Icons.access_time, color: myThemeData.primaryColor),
                       SizedBox(width: 16),
-                      Text("5 min", style: myThemeData.textTheme.caption),
+                      Text(garden.durationString(),
+                          style: myThemeData.textTheme.caption),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -133,7 +128,8 @@ class GardenInfoWidget extends StatelessWidget {
                       Icon(Icons.directions_run,
                           color: myThemeData.primaryColor),
                       SizedBox(width: 16),
-                      Text("200 m", style: myThemeData.textTheme.caption),
+                      Text(garden.distanceString(),
+                          style: myThemeData.textTheme.caption),
                     ],
                   ),
                 ],
@@ -145,6 +141,7 @@ class GardenInfoWidget extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(16),
                   child: RaisedButton.icon(
+                    textColor: Colors.white,
                     label: Text("GO"),
                     icon: Icon(Icons.near_me),
                     onPressed: () {},

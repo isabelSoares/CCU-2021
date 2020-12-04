@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/common/notification.dart';
+import 'package:my_app/new-place-notification-widget.dart';
 import 'package:provider/provider.dart';
 
 class NotificationIcon extends StatelessWidget {
@@ -25,7 +26,7 @@ class NotificationIcon extends StatelessWidget {
               if (!manager.dontShowDialog) {
                 showDialog(
                     context: context,
-                    builder: (_) => NotificationAddedDialog());
+                    builder: (_) => NotificationAddedDialog(name));
               }
             },
           );
@@ -33,6 +34,10 @@ class NotificationIcon extends StatelessWidget {
 }
 
 class NotificationAddedDialog extends StatelessWidget {
+  final String name;
+
+  NotificationAddedDialog(this.name);
+
   @override
   Widget build(BuildContext context) {
     var manager = context.watch<NotificationManager>();
@@ -62,15 +67,23 @@ class NotificationAddedDialog extends StatelessWidget {
       ),
       actions: [
         RaisedButton(
+          textColor: Colors.white,
           child: Text("CLOSE"),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         RaisedButton.icon(
+          textColor: Colors.white,
           icon: Icon(Icons.edit),
           label: Text("EDIT"),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => NewPlaceNotificationWidget(name)));
+          },
         ),
       ],
     );
