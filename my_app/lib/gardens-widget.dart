@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/capacity-info-widget.dart';
 import 'package:my_app/notification-icon-widget.dart';
 import 'theme.dart';
 
@@ -114,14 +115,15 @@ class GardenInfoWidget extends StatelessWidget {
                   Divider(),
                   SizedBox(height: 10),
                   Text("Capacity now:", style: myThemeData.textTheme.subtitle1),
-                  Text(subtitle, style: myThemeData.textTheme.caption),
+                  SizedBox(height: 10),
+                  CapacityInfoWidget(40),
                   SizedBox(height: 10),
                   Divider(),
                   SizedBox(height: 10),
                   Row(
                     children: [
                       Icon(Icons.access_time, color: myThemeData.primaryColor),
-                      SizedBox(width: 8),
+                      SizedBox(width: 16),
                       Text("5 min", style: myThemeData.textTheme.caption),
                     ],
                   ),
@@ -130,6 +132,7 @@ class GardenInfoWidget extends StatelessWidget {
                     children: [
                       Icon(Icons.directions_run,
                           color: myThemeData.primaryColor),
+                      SizedBox(width: 16),
                       Text("200 m", style: myThemeData.textTheme.caption),
                     ],
                   ),
@@ -155,17 +158,3 @@ class GardenInfoWidget extends StatelessWidget {
     );
   }
 }
-
-// Expanded(
-//                       child: Align(
-//                         alignment: Alignment.bottomRight,
-//                         child: RaisedButton.icon(
-//                           textColor: Color(0xFFFFFFFF),
-//                           color: myThemeData.accentColor,
-//                           label:
-//                               Text("GO", style: myThemeData.textTheme.button),
-//                           icon: Icon(Icons.near_me),
-//                           onPressed: () {},
-//                         ),
-//                       ),
-//                     ),
