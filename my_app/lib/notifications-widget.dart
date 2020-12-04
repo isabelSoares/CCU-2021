@@ -15,12 +15,40 @@ class NotificationsWidget extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Notifications"),
+          backgroundColor: Color(0x00FFFFFF),
+          elevation: 0,
           bottom: TabBar(
-            indicatorColor: Colors.white,
+            unselectedLabelColor: myThemeData.accentColor,
+            indicatorSize: TabBarIndicatorSize.label,
+            indicator: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: myThemeData.accentColor,
+            ),
             tabs: [
-              Tab(text: "RECENT"),
-              Tab(text: "SCHEDULED"),
+              Tab(
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border:
+                          Border.all(color: myThemeData.accentColor, width: 1)),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text("RECENT"),
+                  ),
+                ),
+              ),
+              Tab(
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border:
+                          Border.all(color: myThemeData.accentColor, width: 1)),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text("SCHEDULED"),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
