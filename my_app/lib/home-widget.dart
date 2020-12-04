@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/home-screen-widget.dart';
 import 'package:my_app/map-widget.dart';
-import 'for-today-widget.dart';
 import 'notifications-widget.dart';
 import 'theme.dart';
 
@@ -14,7 +14,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   int _currentIndex = 1;
   final List<Widget> _children = [
     NotificationsWidget(),
-    ForTodayWidget(),
+    HomeScreenWidget(),
     MapWidget(),
   ];
   @override

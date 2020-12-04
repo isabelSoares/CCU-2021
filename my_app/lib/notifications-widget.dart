@@ -24,61 +24,9 @@ class NotificationsWidget extends StatelessWidget {
             ],
           ),
         ),
-        // floatingActionButton: SpeedDial(
-        //   // animatedIcon: AnimatedIcons.add_event,
-        //   // animatedIconTheme: IconThemeData(size: 22.0),
-        //   child: Icon(Icons.add),
-        //   overlayColor: Colors.black,
-        //   overlayOpacity: 0.5,
-        //   children: [
-        //     SpeedDialChild(
-        //       child: Icon(Icons.accessibility),
-        //       backgroundColor: Colors.white,
-        //       label: "Places",
-        //       // labelStyle: TextStyle(fontSize: 18.0),
-        //       onTap: () {},
-        //     ),
-        //     SpeedDialChild(
-        //       child: IconButton(
-        //           icon: FaIcon(FontAwesomeIcons.utensils,
-        //               color: myThemeData.accentColor),
-        //           onPressed: () {
-        //             Navigator.pop(context);
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => NewNotificationWidget()));
-        //           }),
-        //       backgroundColor: Colors.white,
-        //       label: "Dishes",
-        //       // labelStyle: TextStyle(fontSize: 18.0),
-        //       // onTap: () {},
-        //     ),
-        //     SpeedDialChild(
-        //       child: FaIcon(FontAwesomeIcons.music,
-        //           color: myThemeData.accentColor),
-        //       backgroundColor: Colors.white,
-        //       label: "Events",
-        //       // labelStyle: TextStyle(fontSize: 18.0),
-        //       onTap: () {},
-        //     ),
-        //     SpeedDialChild(
-        //       child: FaIcon(FontAwesomeIcons.university,
-        //           color: myThemeData.accentColor),
-        //       backgroundColor: Colors.white,
-        //       label: "Exhibitions",
-        //       // labelStyle: TextStyle(fontSize: 18.0),
-        //       onTap: () {},
-        //     )
-        //   ],
-        // ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             _notificationsModalBottomSheet(context);
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => NewNotificationWidget()));
           },
           child: Icon(Icons.add),
           backgroundColor: myThemeData.accentColor,
