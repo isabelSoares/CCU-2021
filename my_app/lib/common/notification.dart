@@ -89,6 +89,13 @@ class NotificationPlace extends MyNotification {
   TimeOfDay timeTo;
   double capacity;
 
+  NotificationPlace.basic(name)
+      : super(name: name, type: NotificationType.PLACE) {
+    this.timeFrom = TimeOfDay(hour: 9, minute: 00);
+    this.timeTo = TimeOfDay(hour: 18, minute: 00);
+    this.capacity = 50.0;
+  }
+
   NotificationPlace(name, this.timeFrom, this.timeTo, this.capacity)
       : super(name: name, type: NotificationType.PLACE);
 
@@ -138,33 +145,35 @@ class NotificationManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  void togglePlaceNotification(String name) {
+    bool hasNotification = false;
+    var index = 0;
+
+    for (; index < _notifications.length; index++) {
+      if (_notifications[index].name == name) {
+        hasNotification = true;
+        break;
+      }
+    }
+
+    if (hasNotification) {
+      _notifications.removeAt(index);
+    } else {
+      _notifications.add(NotificationPlace.basic(name));
+    }
+  }
+
+  bool hasPlaceNotification(String name) {
+    for (var index = 0; index < _notifications.length; index++) {
+      if (_notifications[index].name == name) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   void remove(MyNotification notification) {
     _notifications.remove(notification);
     notifyListeners();
   }
 }
-
-// SINGLETON NOTIFICATION MANAGER
-// class NotificationManager {
-//   static final NotificationManager _instance = NotificationManager._internal();
-
-//   List<MyNotification> notifications = [];
-
-//   factory NotificationManager() {
-//     return _instance;
-//   }
-
-//   NotificationManager._internal();
-
-//   static NotificationManager get manager {
-//     return _instance;
-//   }
-
-//   void addNotification(MyNotification notification) {
-//     notifications.add(notification);
-//   }
-
-//   void removeNotification(MyNotification notification) {
-//     notifications.remove(notification);
-//   }
-// }

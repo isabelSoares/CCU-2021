@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:date_format/date_format.dart';
-import 'package:my_app/notification.dart';
+import 'package:my_app/common/notification.dart';
 
 import 'theme.dart';
 

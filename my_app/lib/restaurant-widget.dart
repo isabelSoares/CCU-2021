@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/notification-icon-widget.dart';
 import 'theme.dart';
 
 class RestaurantWidget extends StatefulWidget {
@@ -57,7 +58,7 @@ class RestaurantInfoWidget extends StatelessWidget {
                       child:
                           Text(title, style: myThemeData.textTheme.headline6),
                     ),
-                    Icon(Icons.notifications_none),
+                    NotificationIcon(title),
                   ],
                 ),
                 SizedBox(height: 10),

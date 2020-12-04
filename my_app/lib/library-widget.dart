@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:my_app/notification-icon-widget.dart';
 import 'theme.dart';
 
 class LibraryWidget extends StatefulWidget {
@@ -58,7 +58,7 @@ class LibraryInfoWidget extends StatelessWidget {
                       child:
                           Text(title, style: myThemeData.textTheme.headline6),
                     ),
-                    Icon(Icons.notifications_none),
+                    NotificationIcon(this.title),
                   ],
                 ),
                 SizedBox(height: 10),
