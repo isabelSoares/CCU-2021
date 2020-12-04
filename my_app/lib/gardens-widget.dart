@@ -142,8 +142,6 @@ class GardenInfoWidget extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(16),
                   child: RaisedButton.icon(
-                    textColor: Color(0xFFFFFFFF),
-                    color: myThemeData.accentColor,
                     label: Text("GO"),
                     icon: Icon(Icons.near_me),
                     onPressed: () {},

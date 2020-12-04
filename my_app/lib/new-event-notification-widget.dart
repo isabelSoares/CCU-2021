@@ -197,8 +197,6 @@ class _NewTypeEventNotificationWidgetState
     var manager = context.watch<NotificationManager>();
 
     return RaisedButton.icon(
-      textColor: Colors.white,
-      color: Theme.of(context).accentColor,
       label: Text("DONE"),
       icon: Icon(Icons.check),
       onPressed: () {

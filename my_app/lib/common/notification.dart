@@ -137,11 +137,18 @@ class NotificationEvent extends MyNotification {
 
 class NotificationManager extends ChangeNotifier {
   List<MyNotification> _notifications = [];
+  bool _dontShowDialog = false;
 
   List<MyNotification> get notifications => _notifications;
+  bool get dontShowDialog => _dontShowDialog;
 
   void add(MyNotification notification) {
     _notifications.add(notification);
+    notifyListeners();
+  }
+
+  void remove(MyNotification notification) {
+    _notifications.remove(notification);
     notifyListeners();
   }
 
@@ -161,6 +168,8 @@ class NotificationManager extends ChangeNotifier {
     } else {
       _notifications.add(NotificationPlace.basic(name));
     }
+
+    notifyListeners();
   }
 
   bool hasPlaceNotification(String name) {
@@ -172,8 +181,8 @@ class NotificationManager extends ChangeNotifier {
     return false;
   }
 
-  void remove(MyNotification notification) {
-    _notifications.remove(notification);
+  void setDontShowDialog(bool value) {
+    _dontShowDialog = value;
     notifyListeners();
   }
 }

@@ -91,16 +91,12 @@ class RestaurantInfoWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       RaisedButton.icon(
-                        textColor: Color(0xFFFFFFFF),
-                        color: myThemeData.accentColor,
                         label: Text("MENU"),
                         icon: Icon(Icons.local_restaurant),
                         onPressed: () {},
                       ),
                       SizedBox(width: 8),
                       RaisedButton.icon(
-                        textColor: Color(0xFFFFFFFF),
-                        color: myThemeData.accentColor,
                         label: Text("GO"),
                         icon: Icon(Icons.near_me),
                         onPressed: () {},
