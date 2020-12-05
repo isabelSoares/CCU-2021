@@ -33,12 +33,12 @@ class CafeInfoWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 360,
+            // width: 360,
             height: 194,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(cafe.image),
-                fit: BoxFit.fill,
+                fit: BoxFit.fitWidth,
               ),
             ),
           ),

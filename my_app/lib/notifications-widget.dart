@@ -35,7 +35,7 @@ class NotificationsWidget extends StatelessWidget {
                           Border.all(color: myThemeData.accentColor, width: 1)),
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text("RECENT"),
+                    child: Text("RECEIVED"),
                   ),
                 ),
               ),
