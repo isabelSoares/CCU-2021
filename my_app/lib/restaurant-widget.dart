@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/capacity-info-widget.dart';
 import 'package:my_app/common/places.dart';
 import 'package:my_app/notification-icon-widget.dart';
+import 'package:my_app/sitemap-widget.dart';
 import 'theme.dart';
 
 class RestaurantWidget extends StatelessWidget {
@@ -100,7 +101,9 @@ class RestaurantInfoWidget extends StatelessWidget {
                         textColor: Colors.white,
                         label: Text("GO"),
                         icon: Icon(Icons.near_me),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SiteMapWidget()));
+                        },
                       ),
                     ],
                   ),
