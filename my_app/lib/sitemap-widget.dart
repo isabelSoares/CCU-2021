@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:my_app/routemap-widget.dart';
+import 'package:my_app/routemap-widget.dart';
 import 'theme.dart';
 
 class SiteMapWidget extends StatefulWidget {
@@ -92,7 +92,7 @@ class SiteMapInfoWidget extends StatelessWidget {
                   label: Text("START"),
                   icon: Icon(Icons.near_me),
                   onPressed: () {
-                    //Navigator.push(context, MaterialPageRoute(builder: (context) => RouteMapWidget()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => RouteMapWidget()));
                   },
                 ),
               ),
