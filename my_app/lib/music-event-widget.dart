@@ -59,7 +59,8 @@ class EventInfoWidget extends StatelessWidget {
                   SizedBox(height: 10),
                   Row(
                     children: [
-                      Icon(Icons.access_time, color: myThemeData.primaryColor),
+                      Icon(Icons.calendar_today,
+                          color: myThemeData.primaryColor),
                       SizedBox(width: 16),
                       Text(event.date, style: myThemeData.textTheme.caption),
                     ],

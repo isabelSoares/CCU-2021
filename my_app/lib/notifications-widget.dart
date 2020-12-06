@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_app/new-place-notification-widget.dart';
 import 'package:my_app/common/notification.dart';
+import 'package:my_app/restaurantMenu-widget.dart';
 import 'theme.dart';
 
 class NotificationsWidget extends StatelessWidget {
@@ -61,7 +62,7 @@ class NotificationsWidget extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            _NotificationsList(),
+            _NotificationsReceivedList(),
             _NotificationsList(),
           ],
         ),
@@ -99,6 +100,10 @@ class NotificationsWidget extends StatelessWidget {
                   title: Text("Dishes"),
                   onTap: () {
                     Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RestaurantMenuWidget()));
                   },
                 ),
                 ListTile(
@@ -124,6 +129,29 @@ class NotificationsWidget extends StatelessWidget {
             ),
           );
         });
+  }
+}
+
+class _NotificationsReceivedList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var manager = context.watch<NotificationManager>();
+
+    return ListView.separated(
+      separatorBuilder: (context, index) => Divider(),
+      itemCount: manager.notificationsReceived.length,
+      itemBuilder: (context, index) => ListTile(
+        title: Text(manager.notificationsReceived[index].title()),
+        subtitle: Text(manager.notificationsReceived[index].subtitle()),
+        enabled: true,
+        trailing: IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: () {
+            manager.removeReceived(manager.notificationsReceived[index]);
+          },
+        ),
+      ),
+    );
   }
 }
 
