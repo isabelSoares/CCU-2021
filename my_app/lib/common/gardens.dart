@@ -9,6 +9,8 @@ class Garden extends Place {
   Duration duration;
   int distance;
   String image;
+  double lat;
+  double long;
 
   Garden({
     this.name,
@@ -17,6 +19,8 @@ class Garden extends Place {
     this.duration,
     this.distance = 200,
     this.image,
+    this.lat,
+    this.long,
   }) : super(
           type: name,
           name: name,
@@ -26,6 +30,8 @@ class Garden extends Place {
           close: TimeOfDay(hour: 19, minute: 0),
           phoneNumber: "",
           image: image,
+          lat: lat,
+          long: long,
         );
 }
 
@@ -35,24 +41,32 @@ List<Garden> gardensList = [
     capacity: Random().nextInt(100).toDouble(),
     duration: Duration(minutes: 5),
     image: "./lib/images/Garden Praça de Espanha.png",
+    lat: 38.73755353858259,
+    long: -9.15538987149227,
   ),
   Garden(
     name: "Garden East",
     capacity: Random().nextInt(100).toDouble(),
     duration: Duration(minutes: 5),
     image: "./lib/images/Garden Praça de Espanha.png",
+    lat: 38.7362625697443,
+    long: -9.154970794626974,
   ),
   Garden(
     name: "Garden South",
     capacity: Random().nextInt(100).toDouble(),
     duration: Duration(minutes: 5),
     image: "./lib/images/Garden São Sebastião.png",
+    lat: 38.73542567859379,
+    long: -9.15286794296053,
   ),
   Garden(
     name: "Garden West",
     capacity: Random().nextInt(100).toDouble(),
     duration: Duration(minutes: 5),
     image: "./lib/images/Garden Praça de Espanha.png",
+    lat: 38.736689380455296,
+    long: -9.1526962816,
   ),
 ];
 

@@ -71,7 +71,6 @@ class MapWidget extends StatelessWidget {
           snippet: allPlaces[i].capacity.round().toString() + " %",
         ),
       );
-      break;
     }
 
     return markers;
