@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/common/musicEvent.dart';
+import 'package:my_app/new-event-notification-widget.dart';
 import 'theme.dart';
 
-class MusicWidget extends StatefulWidget {
-  State<StatefulWidget> createState() {
-    return _MusicWidgetState();
-  }
-}
-
-class _MusicWidgetState extends State<MusicWidget> {
+class MusicWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +15,17 @@ class _MusicWidgetState extends State<MusicWidget> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NewTypeEventNotificationWidget()));
+            },
+          ),
+        ],
       ),
       body: ListView.separated(
         separatorBuilder: (context, index) => Divider(),

@@ -86,39 +86,40 @@ class RestaurantInfoWidget extends StatelessWidget {
           ),
           Expanded(
             child: Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      RaisedButton.icon(
-                        textColor: Colors.white,
-                        label: Text("MENU"),
-                        icon: Icon(Icons.local_restaurant),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      RestaurantMenuWidget()));
-                        },
-                      ),
-                      SizedBox(width: 8),
-                      RaisedButton.icon(
-                        textColor: Colors.white,
-                        label: Text("GO"),
-                        icon: Icon(Icons.near_me),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SiteMapWidget()));
-                        },
-                      ),
-                    ],
-                  ),
-                )),
+              alignment: Alignment.bottomRight,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RaisedButton.icon(
+                      textColor: Colors.white,
+                      label: Text("MENU"),
+                      icon: Icon(Icons.local_restaurant),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RestaurantMenuWidget()));
+                      },
+                    ),
+                    SizedBox(width: 8),
+                    RaisedButton.icon(
+                      textColor: Colors.white,
+                      label: Text("GO"),
+                      icon: Icon(Icons.near_me),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SiteMapWidget(restaurant)));
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),
