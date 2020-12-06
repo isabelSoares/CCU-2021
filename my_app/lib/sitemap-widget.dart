@@ -30,6 +30,14 @@ class SiteMapInfoWidget extends StatelessWidget {
 
   SiteMapInfoWidget(this.place);
 
+  String getLinkString(double lat, double long) {
+    String begin =
+        'https://maps.googleapis.com/maps/api/staticmap?center=38.73622228023147,-9.15344638918027&zoom=16.5&size=360x325&maptype=satellite&markers=color:red%7C';
+    String end = '&key=AIzaSyBzNhE2_nE7vzOIkb-QVIw3nr7CFaZW-YI';
+
+    return begin + lat.toString() + "," + long.toString() + end;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,7 +49,9 @@ class SiteMapInfoWidget extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
-                    'https://maps.googleapis.com/maps/api/staticmap?center=38.73622228023147,-9.15344638918027&zoom=16.5&size=360x325&maptype=satellite&markers=color:red%7C38.736877563633065,-9.15316715580186&key=AIzaSyBzNhE2_nE7vzOIkb-QVIw3nr7CFaZW-YI'),
+                  getLinkString(place.lat, place.long),
+                ),
+                // 'https://maps.googleapis.com/maps/api/staticmap?center=38.73622228023147,-9.15344638918027&zoom=16.5&size=360x325&maptype=satellite&markers=color:red%7C38.736877563633065,-9.15316715580186&key=AIzaSyBzNhE2_nE7vzOIkb-QVIw3nr7CFaZW-YI'),
                 fit: BoxFit.fitWidth,
               ),
             ),
