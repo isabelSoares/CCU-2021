@@ -37,7 +37,7 @@ class CafeMenuWidget extends StatelessWidget {
           Row(
             children: [
               SizedBox(width: 16),
-              Text("Drink", style: myThemeData.textTheme.headline6),
+              Text("Drinks", style: myThemeData.textTheme.headline6),
             ],
           ),
           Expanded(

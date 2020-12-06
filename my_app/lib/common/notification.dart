@@ -71,16 +71,17 @@ String getTimeFrameString(Duration timeFrame) {
 
 class MyNotification {
   String name;
+  String description;
   NotificationType type;
 
-  MyNotification({this.name, this.type});
+  MyNotification({this.name, this.type, this.description = ""});
 
   String title() {
     return name;
   }
 
   String subtitle() {
-    return "";
+    return description;
   }
 }
 
@@ -137,13 +138,28 @@ class NotificationEvent extends MyNotification {
 
 class NotificationManager extends ChangeNotifier {
   List<MyNotification> _notifications = [];
+  List<MyNotification> _notificationsReceived = [];
+
   bool _dontShowDialog = false;
 
   List<MyNotification> get notifications => _notifications;
+  List<MyNotification> get notificationsReceived => _notificationsReceived;
   bool get dontShowDialog => _dontShowDialog;
 
   void add(MyNotification notification) {
     _notifications.add(notification);
+
+    if (notification.name == "Library") {
+      NotificationPlace placeNotification = notification as NotificationPlace;
+      String capacity = placeNotification.capacity.round().toString();
+      _notificationsReceived.add(
+        MyNotification(
+            name: "Library",
+            description:
+                "Currently it has a capacity lower than " + capacity + "%"),
+      );
+    }
+
     notifyListeners();
   }
 
@@ -152,18 +168,27 @@ class NotificationManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void togglePlaceNotification(String name) {
-    bool hasNotification = false;
-    var index = 0;
+  void removeReceived(MyNotification notification) {
+    _notificationsReceived.remove(notification);
+    notifyListeners();
+  }
 
-    for (; index < _notifications.length; index++) {
-      if (_notifications[index].name == name) {
-        hasNotification = true;
-        break;
+  int findNotification(String name) {
+    var index = -1;
+
+    for (int i = 0; i < _notifications.length; i++) {
+      if (_notifications[i].name == name) {
+        index = i;
       }
     }
 
-    if (hasNotification) {
+    return index;
+  }
+
+  void togglePlaceNotification(String name) {
+    int index = findNotification(name);
+
+    if (index != -1) {
       _notifications.removeAt(index);
     } else {
       _notifications.add(NotificationPlace.basic(name));
@@ -173,12 +198,7 @@ class NotificationManager extends ChangeNotifier {
   }
 
   bool hasNotification(String name) {
-    for (var index = 0; index < _notifications.length; index++) {
-      if (_notifications[index].name == name) {
-        return true;
-      }
-    }
-    return false;
+    return findNotification(name) != -1;
   }
 
   void addSpecificEventNotification(String name) {
@@ -188,17 +208,27 @@ class NotificationManager extends ChangeNotifier {
   }
 
   void toggleSpecificEventNotification(String name) {
-    bool hasNotification = false;
-    var index = 0;
+    int index = findNotification(name);
 
-    for (; index < _notifications.length; index++) {
-      if (_notifications[index].name == name) {
-        hasNotification = true;
-        break;
-      }
+    if (index != -1) {
+      _notifications.removeAt(index);
+    } else {
+      addSpecificEventNotification(name);
     }
 
-    if (hasNotification) {
+    notifyListeners();
+  }
+
+  void addDishNotification(String name, String description) {
+    _notifications.add(MyNotification(
+        name: name, description: description, type: NotificationType.DISH));
+    notifyListeners();
+  }
+
+  void toggleDishNotification(String name) {
+    int index = findNotification(name);
+
+    if (index != -1) {
       _notifications.removeAt(index);
     } else {
       addSpecificEventNotification(name);
