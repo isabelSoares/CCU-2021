@@ -35,13 +35,14 @@ class RestaurantInfoWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 360,
+            // width: 360,
             height: 194,
             decoration: BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage(restaurant.image),
-              fit: BoxFit.fill,
-            )),
+              image: DecorationImage(
+                image: AssetImage(restaurant.image),
+                fit: BoxFit.fitWidth,
+              ),
+            ),
           ),
           Container(
             padding: EdgeInsets.all(16),

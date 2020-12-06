@@ -17,27 +17,32 @@ class HomeScreenWidget extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
             child: Container(
-              // padding: EdgeInsets.all(16),
               child: Image.asset(
                 './lib/images/Logo_Gulbenkian_no_background.png',
                 fit: BoxFit.fill,
               ),
             ),
           ),
+          SizedBox(height: 50),
           MenuButton("Gardens", Color(0xFF3EA85C), FontAwesomeIcons.tree,
               GardensWidget()),
+          SizedBox(height: 16),
           MenuButton(
               "Cafe", Color(0xFF5CB272), FontAwesomeIcons.coffee, CafeWidget()),
+          SizedBox(height: 16),
           MenuButton("Restaurant", Color(0xFF78BD89), FontAwesomeIcons.utensils,
               RestaurantWidget()),
+          SizedBox(height: 16),
           MenuButton("Events", Color(0xFF9FCBAA), FontAwesomeIcons.music,
               MusicWidget()),
+          SizedBox(height: 16),
           MenuButton("Exhibitions", Color(0xFFC6DDCB),
               FontAwesomeIcons.university, MuseumWidget()),
+          SizedBox(height: 16),
           MenuButton("Library", Color(0xFFE6E8E7), FontAwesomeIcons.book,
               LibraryWidget()),
         ],

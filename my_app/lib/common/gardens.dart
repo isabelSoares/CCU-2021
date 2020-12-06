@@ -29,3 +29,17 @@ List<Garden> gardensList = [
   Garden(name: "Garden B", capacity: 30.0, duration: Duration(minutes: 5)),
   Garden(name: "Garden C", capacity: 50.0, duration: Duration(minutes: 5)),
 ];
+
+Garden getGardenLowestCapacity() {
+  int index = 0;
+  double capacity = 100;
+
+  for (int i = 0; i < gardensList.length; i++) {
+    if (gardensList[i].capacity < capacity) {
+      index = i;
+      capacity = gardensList[i].capacity;
+    }
+  }
+
+  return gardensList[index];
+}

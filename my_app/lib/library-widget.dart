@@ -34,12 +34,12 @@ class LibraryInfoWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 360,
+            // width: 360,
             height: 194,
             decoration: BoxDecoration(
                 image: DecorationImage(
               image: AssetImage(library.image),
-              fit: BoxFit.fill,
+              fit: BoxFit.fitWidth,
             )),
           ),
           Container(
