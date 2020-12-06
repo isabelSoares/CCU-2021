@@ -69,6 +69,8 @@ flutter:
     - lib/images/Logo_Gulbenkian.jpg
     - lib/images/Logo Gulbenkian.svg
     - lib/images/Logo_Gulbenkian_no_background.png
+    - lib/images/garden_east.png
+    - lib/images/garden_West.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
