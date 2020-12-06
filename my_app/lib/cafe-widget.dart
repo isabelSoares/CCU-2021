@@ -111,7 +111,7 @@ class CafeInfoWidget extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SiteMapWidget()));
+                                  builder: (context) => SiteMapWidget(cafe)));
                         },
                       ),
                     ],

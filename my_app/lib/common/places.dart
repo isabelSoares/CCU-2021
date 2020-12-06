@@ -13,6 +13,7 @@ class Place {
   TimeOfDay close;
   String phoneNumber;
   String image;
+  String routeImage;
 
   Place({
     this.type,
@@ -25,6 +26,7 @@ class Place {
     this.distance,
     this.phoneNumber,
     this.image,
+    this.routeImage,
   });
 
   String getOpeningString() {

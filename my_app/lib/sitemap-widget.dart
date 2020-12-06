@@ -98,7 +98,7 @@ class SiteMapInfoWidget extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RouteMapWidget()));
+                            builder: (context) => RouteMapWidget(place)));
                   },
                 ),
               ),
