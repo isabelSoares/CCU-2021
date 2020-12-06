@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/common/musicEvent.dart';
+import 'theme.dart';
 
 class MusicWidget extends StatefulWidget {
   State<StatefulWidget> createState() {
@@ -19,7 +21,43 @@ class _MusicWidgetState extends State<MusicWidget> {
           },
         ),
       ),
-      body: Icon(Icons.nature),
+      body: ListView.separated(
+        separatorBuilder: (context, index) => Divider(),
+        itemCount: musicEventsList.length,
+        itemBuilder: (context, index) =>
+            MusicEventsListItem(musicEventsList[index]),
+      ),
+    );
+  }
+}
+
+class MusicEventsListItem extends StatelessWidget {
+  final MusicEvent musicEvent;
+
+  MusicEventsListItem(this.musicEvent);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(musicEvent.name, style: myThemeData.textTheme.subtitle1),
+      subtitle: Text(musicEvent.date),
+      leading: Container(
+        width: 100,
+        height: 56,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(musicEvent.image),
+            fit: BoxFit.fill,
+          ),
+        ),
+      ),
+      enabled: true,
+      /*onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GardenInfoWidget(musicEvent)));
+        }*/
     );
   }
 }
