@@ -76,11 +76,11 @@ class MyNotification {
   MyNotification({this.name, this.type});
 
   String title() {
-    return "TITLE SUPER";
+    return name;
   }
 
   String subtitle() {
-    return "SUBTITLE SUPER";
+    return "";
   }
 }
 
@@ -172,13 +172,39 @@ class NotificationManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool hasPlaceNotification(String name) {
+  bool hasNotification(String name) {
     for (var index = 0; index < _notifications.length; index++) {
       if (_notifications[index].name == name) {
         return true;
       }
     }
     return false;
+  }
+
+  void addSpecificEventNotification(String name) {
+    _notifications
+        .add(MyNotification(name: name, type: NotificationType.EVENT));
+    notifyListeners();
+  }
+
+  void toggleSpecificEventNotification(String name) {
+    bool hasNotification = false;
+    var index = 0;
+
+    for (; index < _notifications.length; index++) {
+      if (_notifications[index].name == name) {
+        hasNotification = true;
+        break;
+      }
+    }
+
+    if (hasNotification) {
+      _notifications.removeAt(index);
+    } else {
+      addSpecificEventNotification(name);
+    }
+
+    notifyListeners();
   }
 
   void setDontShowDialog(bool value) {

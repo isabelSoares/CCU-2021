@@ -46,35 +46,42 @@ class SiteMapInfoWidget extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.location_on, color: myThemeData.primaryColor),
-                    SizedBox(width: 8),
-                    Text(place.name, style: myThemeData.textTheme.bodyText1),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Icon(Icons.access_time, color: myThemeData.primaryColor),
-                    SizedBox(width: 8),
-                    Text(place.name, style: myThemeData.textTheme.bodyText1),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Icon(Icons.phone, color: myThemeData.primaryColor),
-                    SizedBox(width: 8),
-                    Text("200 m", style: myThemeData.textTheme.bodyText1),
-                  ],
-                ),
-              ],
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.location_on, color: myThemeData.primaryColor),
+                      SizedBox(width: 8),
+                      Text(place.name, style: myThemeData.textTheme.bodyText1),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Icon(Icons.access_time, color: myThemeData.primaryColor),
+                      SizedBox(width: 8),
+                      Text(place.durationString(),
+                          style: myThemeData.textTheme.bodyText1),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Icon(Icons.directions_run,
+                          color: myThemeData.primaryColor),
+                      SizedBox(width: 8),
+                      Text(place.distanceString(),
+                          style: myThemeData.textTheme.bodyText1),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(

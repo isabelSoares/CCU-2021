@@ -10,7 +10,7 @@ class NotificationIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var manager = context.watch<NotificationManager>();
-    bool hasNotification = manager.hasPlaceNotification(name);
+    bool hasNotification = manager.hasNotification(name);
 
     return hasNotification
         ? IconButton(

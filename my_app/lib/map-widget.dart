@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/custom-drawer-widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 Map<MarkerId, Marker> markers = <MarkerId, Marker>{

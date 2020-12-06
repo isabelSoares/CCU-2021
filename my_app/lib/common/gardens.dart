@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/common/places.dart';
+import 'dart:math';
 
 class Garden extends Place {
   String name;
@@ -15,7 +16,7 @@ class Garden extends Place {
     this.capacity,
     this.duration,
     this.distance = 200,
-    this.image = "./lib/images/Garden São Sebastião.png",
+    this.image,
   }) : super(
           type: name,
           name: name,
@@ -24,22 +25,35 @@ class Garden extends Place {
           open: TimeOfDay(hour: 8, minute: 00),
           close: TimeOfDay(hour: 19, minute: 0),
           phoneNumber: "",
-          image: "./lib/images/Garden São Sebastião.png",
+          image: image,
         );
-
-  String durationString() {
-    return duration.inMinutes.toString() + " min";
-  }
-
-  String distanceString() {
-    return distance.toString() + " m";
-  }
 }
 
 List<Garden> gardensList = [
-  Garden(name: "Garden A", capacity: 20.0, duration: Duration(minutes: 5)),
-  Garden(name: "Garden B", capacity: 30.0, duration: Duration(minutes: 5)),
-  Garden(name: "Garden C", capacity: 50.0, duration: Duration(minutes: 5)),
+  Garden(
+    name: "Garden North",
+    capacity: Random().nextInt(100).toDouble(),
+    duration: Duration(minutes: 5),
+    image: "./lib/images/Garden Praça de Espanha.png",
+  ),
+  Garden(
+    name: "Garden East",
+    capacity: Random().nextInt(100).toDouble(),
+    duration: Duration(minutes: 5),
+    image: "./lib/images/Garden Praça de Espanha.png",
+  ),
+  Garden(
+    name: "Garden South",
+    capacity: Random().nextInt(100).toDouble(),
+    duration: Duration(minutes: 5),
+    image: "./lib/images/Garden São Sebastião.png",
+  ),
+  Garden(
+    name: "Garden West",
+    capacity: Random().nextInt(100).toDouble(),
+    duration: Duration(minutes: 5),
+    image: "./lib/images/Garden Praça de Espanha.png",
+  ),
 ];
 
 Garden getGardenLowestCapacity() {

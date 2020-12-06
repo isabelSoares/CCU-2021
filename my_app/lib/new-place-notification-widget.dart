@@ -253,7 +253,7 @@ class _NewPlaceNotificationWidgetState
       label: Text("DONE"),
       icon: Icon(Icons.check),
       onPressed: () {
-        if (manager.hasPlaceNotification(widget.place)) {
+        if (manager.hasNotification(widget.place)) {
           manager.togglePlaceNotification(widget.place);
         }
 

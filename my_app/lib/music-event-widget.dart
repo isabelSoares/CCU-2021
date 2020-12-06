@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/notification-icon-widget.dart';
 import 'package:my_app/common/musicEvent.dart';
+import 'common/notification.dart';
+import 'package:provider/provider.dart';
+
 import 'theme.dart';
 
 class EventInfoWidget extends StatelessWidget {
@@ -45,7 +47,7 @@ class EventInfoWidget extends StatelessWidget {
                         child: Text(event.name,
                             style: myThemeData.textTheme.headline6),
                       ),
-                      NotificationIcon(event.name),
+                      NotificationEventIcon(event.name),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -69,5 +71,30 @@ class EventInfoWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class NotificationEventIcon extends StatelessWidget {
+  final String eventName;
+
+  NotificationEventIcon(this.eventName);
+
+  Widget build(BuildContext context) {
+    var manager = context.watch<NotificationManager>();
+    bool hasNotification = manager.hasNotification(eventName);
+
+    return hasNotification
+        ? IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              manager.toggleSpecificEventNotification(eventName);
+            },
+          )
+        : IconButton(
+            icon: Icon(Icons.notifications_none),
+            onPressed: () {
+              manager.toggleSpecificEventNotification(eventName);
+            },
+          );
   }
 }

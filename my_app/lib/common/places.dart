@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
+import 'dart:math';
 
 class Place {
   String type;
   String name;
   String description;
   double capacity;
+  Duration duration;
+  int distance;
   TimeOfDay open;
   TimeOfDay close;
   String phoneNumber;
@@ -18,6 +21,8 @@ class Place {
     this.capacity,
     this.open,
     this.close,
+    this.duration,
+    this.distance,
     this.phoneNumber,
     this.image,
   });
@@ -31,6 +36,14 @@ class Place {
 
     return "Opened: " + formatTime(open) + " - " + formatTime(close);
   }
+
+  String durationString() {
+    return duration.inMinutes.toString() + " min";
+  }
+
+  String distanceString() {
+    return distance.toString() + " m";
+  }
 }
 
 class Library extends Place {
@@ -41,6 +54,8 @@ class Library extends Place {
     capacity,
     open,
     close,
+    duration,
+    distance,
     phoneNumber,
     image,
   }) : super(
@@ -50,6 +65,8 @@ class Library extends Place {
           capacity: capacity,
           open: open,
           close: close,
+          duration: duration,
+          distance: distance,
           phoneNumber: phoneNumber,
           image: "./lib/images/Library.png",
         );
@@ -63,6 +80,8 @@ class Cafe extends Place {
     capacity,
     open,
     close,
+    duration,
+    distance,
     phoneNumber,
     image,
   }) : super(
@@ -72,6 +91,8 @@ class Cafe extends Place {
           capacity: capacity,
           open: open,
           close: close,
+          duration: duration,
+          distance: distance,
           phoneNumber: phoneNumber,
           image: "./lib/images/Cafe.png",
         );
@@ -85,6 +106,8 @@ class Restaurant extends Place {
     capacity,
     open,
     close,
+    duration,
+    distance,
     phoneNumber,
     image,
   }) : super(
@@ -94,29 +117,37 @@ class Restaurant extends Place {
           capacity: capacity,
           open: open,
           close: close,
+          duration: duration,
+          distance: distance,
           phoneNumber: phoneNumber,
           image: "lib/images/Restaurant.png",
         );
 }
 
 Library library = Library(
-  capacity: 30.0,
+  capacity: Random().nextInt(100).toDouble(),
   open: TimeOfDay(hour: 10, minute: 00),
   close: TimeOfDay(hour: 17, minute: 30),
+  duration: Duration(minutes: 5),
+  distance: 200,
   phoneNumber: "21 782 3000",
 );
 
 Cafe cafe = Cafe(
-  capacity: 20.0,
+  capacity: Random().nextInt(100).toDouble(),
   open: TimeOfDay(hour: 10, minute: 00),
   close: TimeOfDay(hour: 18, minute: 00),
+  duration: Duration(minutes: 5),
+  distance: 200,
   phoneNumber: "21 782 3000",
 );
 
 Restaurant restaurant = Restaurant(
-  capacity: 50.0,
+  capacity: Random().nextInt(100).toDouble(),
   open: TimeOfDay(hour: 10, minute: 00),
   close: TimeOfDay(hour: 18, minute: 00),
+  duration: Duration(minutes: 5),
+  distance: 200,
   phoneNumber: "21 782 3000",
 );
 

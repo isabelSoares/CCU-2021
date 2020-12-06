@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/common/musicEvent.dart';
+import 'package:my_app/music-event-widget.dart';
 import 'package:my_app/new-event-notification-widget.dart';
 import 'theme.dart';
 
@@ -58,12 +59,12 @@ class MusicEventsListItem extends StatelessWidget {
         ),
       ),
       enabled: true,
-      /*onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => GardenInfoWidget(musicEvent)));
-        }*/
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EventInfoWidget(musicEvent)));
+      },
     );
   }
 }
