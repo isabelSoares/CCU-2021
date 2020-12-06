@@ -1,10 +1,12 @@
 class MusicEvent {
   String name;
+  String description;
   String date;
   String image;
 
   MusicEvent({
     this.name,
+    this.description,
     this.date,
     this.image,
   });

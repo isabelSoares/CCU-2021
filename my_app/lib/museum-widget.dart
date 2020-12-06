@@ -2,18 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:my_app/common/museumEvent.dart';
 import 'theme.dart';
 
-class MuseumWidget extends StatefulWidget {
-  State<StatefulWidget> createState() {
-    return _MuseumWidgetState();
-  }
-}
-
-class _MuseumWidgetState extends State<MuseumWidget> {
+class MuseumWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Museum Exhibitions"),
+        title: const Text("Exhibitions"),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
