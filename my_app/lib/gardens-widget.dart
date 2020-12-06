@@ -192,7 +192,7 @@ class GardenInfoWidget extends StatelessWidget {
                     label: Text("GO"),
                     icon: Icon(Icons.near_me),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SiteMapWidget()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SiteMapWidget(garden)));
                     },
                   ),
                 ),
