@@ -27,8 +27,8 @@ class Place {
     this.distance,
     this.phoneNumber,
     this.image,
-    this.lat = 38.736877563633065,
-    this.long = -9.15316715580186,
+    this.lat,
+    this.long,
   });
 
   String getOpeningString() {
@@ -62,6 +62,8 @@ class Library extends Place {
     distance,
     phoneNumber,
     image,
+    lat,
+    long,
   }) : super(
           type: "Library",
           name: "Biblioteca de Arte",
@@ -73,6 +75,8 @@ class Library extends Place {
           distance: distance,
           phoneNumber: phoneNumber,
           image: "./lib/images/Library.png",
+          lat: 38.73754193759186,
+          long: -9.153211002149378,
         );
 }
 
@@ -88,6 +92,8 @@ class Cafe extends Place {
     distance,
     phoneNumber,
     image,
+    lat,
+    long,
   }) : super(
           type: "Cafe",
           name: "Centro Interpretativo Gonçalo Ribeiro Telles",
@@ -99,6 +105,8 @@ class Cafe extends Place {
           distance: distance,
           phoneNumber: phoneNumber,
           image: "./lib/images/Cafe.png",
+          lat: 38.73697816368897,
+          long: -9.152690852595402,
         );
 }
 
@@ -114,6 +122,8 @@ class Restaurant extends Place {
     distance,
     phoneNumber,
     image,
+    lat,
+    long,
   }) : super(
           type: "Restaurant",
           name: "Cafetaria do Museu Gulbenkian",
@@ -125,6 +135,8 @@ class Restaurant extends Place {
           distance: distance,
           phoneNumber: phoneNumber,
           image: "lib/images/Restaurant.png",
+          lat: 38.737316890280184,
+          long: -9.153443665808037,
         );
 }
 
