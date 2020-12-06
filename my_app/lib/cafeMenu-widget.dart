@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:my_app/common/restaurantMenu.dart';
 import 'theme.dart';
 
-class RestaurantMenuWidget extends StatelessWidget {
+class CafeMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Restaurant Menu"),
+        title: const Text("Cafe Menu"),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -29,9 +29,9 @@ class RestaurantMenuWidget extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               separatorBuilder: (context, index) => Divider(),
-              itemCount: restaurantFoodMenuList.length,
+              itemCount: cafeFoodMenuList.length,
               itemBuilder: (context, index) =>
-                  RestaurantMenuListItem(restaurantFoodMenuList[index]),
+                  CafeMenuListItem(cafeFoodMenuList[index]),
             ),
           ),
           Row(
@@ -43,9 +43,9 @@ class RestaurantMenuWidget extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               separatorBuilder: (context, index) => Divider(),
-              itemCount: restaurantDrinksMenuList.length,
+              itemCount: cafeDrinksMenuList.length,
               itemBuilder: (context, index) =>
-                  RestaurantMenuListItem(restaurantDrinksMenuList[index]),
+                  CafeMenuListItem(cafeDrinksMenuList[index]),
             ),
           ),
         ],
@@ -54,16 +54,16 @@ class RestaurantMenuWidget extends StatelessWidget {
   }
 }
 
-class RestaurantMenuListItem extends StatelessWidget {
-  final RestaurantMenu restaurantMenu;
+class CafeMenuListItem extends StatelessWidget {
+  final RestaurantMenu cafeMenu;
 
-  RestaurantMenuListItem(this.restaurantMenu);
+  CafeMenuListItem(this.cafeMenu);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(restaurantMenu.name, style: myThemeData.textTheme.subtitle1),
-      subtitle: Text(restaurantMenu.price),
+      title: Text(cafeMenu.name, style: myThemeData.textTheme.subtitle1),
+      subtitle: Text(cafeMenu.price),
       enabled: true,
     );
   }
