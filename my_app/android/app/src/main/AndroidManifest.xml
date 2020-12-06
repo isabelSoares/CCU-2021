@@ -7,8 +7,12 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="my_app"
+        android:label="LivinGulbenkian"
         android:icon="@mipmap/ic_launcher">
+
+        <!-- GOOGLE MAPS API key-->
+        <meta-data android:name="com.google.android.geo.API_KEY"
+                   android:value="AIzaSyBzNhE2_nE7vzOIkb-QVIw3nr7CFaZW-YI"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -24,6 +28,7 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+
             <!-- Displays an Android View that continues showing the launch screen
                  Drawable until Flutter paints its first frame, then this splash
                  screen fades out. A splash screen is useful to avoid any visual
