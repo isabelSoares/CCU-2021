@@ -1,10 +1,10 @@
 # Prototypes
 
 # Setup and Run
-1. git clone (https://github.com/isabelSoares/CCU-2021.git)
-2. Install flutter by following these steps(https://flutter.dev/docs/get-started/install/windows)
+1. git clone https://github.com/isabelSoares/CCU-2021.git
+2. Install flutter by following these steps https://flutter.dev/docs/get-started/install/windows
 3. Install the emulator ( we used Pixel 4).
-4. Launch the emulator ( flutter emulators --launch "emulatorid" )
+4. Launch the emulator ( `flutter emulators --launch "emulatorid"` )
 
 ## Run the App
 5. flutter run
