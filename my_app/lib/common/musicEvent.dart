@@ -12,15 +12,15 @@ class MusicEvent {
 
 List<MusicEvent> musicEventsList = [
   MusicEvent(
-      name: "Music Event A",
+      name: "Nikolai Lugansky",
       date: "09 Jan - 14 Jan",
-      image: "./lib/images/Garden São Sebastião.png"),
+      image: "./lib/images/piano1.png"),
   MusicEvent(
-      name: "Music Event B",
+      name: "Seong-Jin Cho",
       date: "10 Jan - 15 Jan",
-      image: "./lib/images/Garden São Sebastião.png"),
+      image: "./lib/images/piano2.png"),
   MusicEvent(
-      name: "Music Event C",
+      name: "Arcadi Volodos",
       date: "11 Jan - 16 Jan",
-      image: "./lib/images/Garden São Sebastião.png"),
+      image: "./lib/images/piano3.png"),
 ];

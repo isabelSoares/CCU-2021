@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/cafeMenu-widget.dart';
 import 'package:my_app/common/places.dart';
 import 'package:my_app/capacity-info-widget.dart';
 import 'package:my_app/notification-icon-widget.dart';
@@ -94,7 +95,12 @@ class CafeInfoWidget extends StatelessWidget {
                         textColor: Colors.white,
                         label: Text("MENU"),
                         icon: Icon(Icons.local_restaurant),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CafeMenuWidget()));
+                        },
                       ),
                       SizedBox(width: 8),
                       RaisedButton.icon(
@@ -102,7 +108,10 @@ class CafeInfoWidget extends StatelessWidget {
                         label: Text("GO"),
                         icon: Icon(Icons.near_me),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SiteMapWidget()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SiteMapWidget()));
                         },
                       ),
                     ],
