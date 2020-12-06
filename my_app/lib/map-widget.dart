@@ -46,12 +46,34 @@ class MapWidget extends StatelessWidget {
     return Scaffold(
       body: GoogleMap(
         onMapCreated: _onMapCreated,
-        markers: Set<Marker>.of(markers.values),
+        markers: Set<Marker>.of(createMarkers().values),
         initialCameraPosition: CameraPosition(
           target: _center,
           zoom: 16.5,
         ),
       ),
     );
+  }
+
+  Map<MarkerId, Marker> createMarkers() {
+    List<Place> allPlaces = [];
+    allPlaces.addAll(placesList);
+    allPlaces.addAll(gardensList);
+
+    Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+
+    for (int i = 0; i < allPlaces.length; i++) {
+      markers[MarkerId('marker_id_' + i.toString())] = Marker(
+        markerId: MarkerId(i.toString()),
+        position: LatLng(allPlaces[i].lat, allPlaces[i].long),
+        infoWindow: InfoWindow(
+          title: allPlaces[i].name,
+          snippet: allPlaces[i].capacity.round().toString() + " %",
+        ),
+      );
+      break;
+    }
+
+    return markers;
   }
 }
