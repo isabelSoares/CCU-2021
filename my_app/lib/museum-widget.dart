@@ -20,7 +20,7 @@ class MuseumWidget extends StatelessWidget {
         ),
       ),
       body: StreamBuilder(
-        stream: databaseReference.child("events").onValue,
+        stream: databaseReference.child("exhibitions").onValue,
         builder: (context, AsyncSnapshot<Event> snapshot) {
           if (snapshot.hasData) {
             exhibitions = [];
