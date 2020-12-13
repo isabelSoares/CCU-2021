@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/common/musicEvent.dart';
-import 'common/notification.dart';
-import 'package:provider/provider.dart';
-
+import 'package:firebase_database/firebase_database.dart';
 import 'theme.dart';
 
 class EventInfoWidget extends StatelessWidget {
-  final MusicEvent event;
+  final event;
 
   EventInfoWidget(this.event);
 
@@ -30,7 +27,7 @@ class EventInfoWidget extends StatelessWidget {
               height: 194,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(event.image),
+                  image: AssetImage(event["image"]),
                   fit: BoxFit.fitWidth,
                 ),
               ),
@@ -44,15 +41,15 @@ class EventInfoWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Text(event.name,
+                        child: Text(event["name"],
                             style: myThemeData.textTheme.headline6),
                       ),
-                      NotificationEventIcon(event.name),
+                      NotificationEventIcon(event["name"]),
                     ],
                   ),
                   SizedBox(height: 10),
-                  event.description != null
-                      ? Text(event.description,
+                  event["description"] != null
+                      ? Text(event["description"],
                           style: myThemeData.textTheme.caption)
                       : Container(),
                   Divider(),
@@ -62,7 +59,7 @@ class EventInfoWidget extends StatelessWidget {
                       Icon(Icons.calendar_today,
                           color: myThemeData.primaryColor),
                       SizedBox(width: 16),
-                      Text(event.date, style: myThemeData.textTheme.caption),
+                      Text(event["date"], style: myThemeData.textTheme.caption),
                     ],
                   ),
                 ],
@@ -77,25 +74,48 @@ class EventInfoWidget extends StatelessWidget {
 
 class NotificationEventIcon extends StatelessWidget {
   final String eventName;
+  final databaseReference = FirebaseDatabase.instance.reference();
 
   NotificationEventIcon(this.eventName);
 
   Widget build(BuildContext context) {
-    var manager = context.watch<NotificationManager>();
-    bool hasNotification = manager.hasNotification(eventName);
+    return StreamBuilder(
+      stream: databaseReference
+          .child("notifications/scheduled")
+          .orderByChild("name")
+          .equalTo(eventName)
+          .onValue,
+      builder: (context, AsyncSnapshot<Event> snapshot) {
+        if (snapshot.hasData) {
+          DataSnapshot dataValues = snapshot.data.snapshot;
+          Map<dynamic, dynamic> values = dataValues.value;
 
-    return hasNotification
-        ? IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              manager.toggleSpecificEventNotification(eventName);
-            },
-          )
-        : IconButton(
-            icon: Icon(Icons.notifications_none),
-            onPressed: () {
-              manager.toggleSpecificEventNotification(eventName);
-            },
-          );
+          if (values != null) {
+            return IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                databaseReference
+                    .child("notifications/scheduled/" +
+                        values.keys.first.toString())
+                    .remove();
+              },
+            );
+          } else {
+            return IconButton(
+              icon: Icon(Icons.notifications_none),
+              onPressed: () {
+                DatabaseReference itemRef =
+                    databaseReference.child("notifications/scheduled").push();
+                itemRef.set({
+                  "type": "eventSpecific",
+                  "name": eventName,
+                });
+              },
+            );
+          }
+        }
+        return Center(child: CircularProgressIndicator());
+      },
+    );
   }
 }

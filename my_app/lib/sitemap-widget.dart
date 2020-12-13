@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/routemap-widget.dart';
-import 'package:my_app/common/places.dart';
 import 'theme.dart';
 
 class SiteMapWidget extends StatelessWidget {
-  final Place place;
+  final place;
 
   SiteMapWidget(this.place);
 
@@ -12,7 +11,7 @@ class SiteMapWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(place.type),
+        title: Text(place["type"]),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -26,7 +25,7 @@ class SiteMapWidget extends StatelessWidget {
 }
 
 class SiteMapInfoWidget extends StatelessWidget {
-  final Place place;
+  final place;
 
   SiteMapInfoWidget(this.place);
 
@@ -42,14 +41,14 @@ class SiteMapInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            // width: 360,
-            height: 350,
+            height: 325,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
-                  getLinkString(place.lat, place.long),
+                  getLinkString(place["latitude"], place["longitude"]),
                 ),
                 // 'https://maps.googleapis.com/maps/api/staticmap?center=38.73622228023147,-9.15344638918027&zoom=16.5&size=360x325&maptype=satellite&markers=color:red%7C38.736877563633065,-9.15316715580186&key=AIzaSyBzNhE2_nE7vzOIkb-QVIw3nr7CFaZW-YI'),
                 fit: BoxFit.fitWidth,
@@ -68,7 +67,8 @@ class SiteMapInfoWidget extends StatelessWidget {
                     children: [
                       Icon(Icons.location_on, color: myThemeData.primaryColor),
                       SizedBox(width: 8),
-                      Text(place.name, style: myThemeData.textTheme.bodyText1),
+                      Text(place["name"],
+                          style: myThemeData.textTheme.bodyText1),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -76,7 +76,7 @@ class SiteMapInfoWidget extends StatelessWidget {
                     children: [
                       Icon(Icons.access_time, color: myThemeData.primaryColor),
                       SizedBox(width: 8),
-                      Text(place.durationString(),
+                      Text("${place["duration"]} min",
                           style: myThemeData.textTheme.bodyText1),
                     ],
                   ),
@@ -86,7 +86,7 @@ class SiteMapInfoWidget extends StatelessWidget {
                       Icon(Icons.directions_run,
                           color: myThemeData.primaryColor),
                       SizedBox(width: 8),
-                      Text(place.distanceString(),
+                      Text("${place["distance"]} m",
                           style: myThemeData.textTheme.bodyText1),
                     ],
                   ),

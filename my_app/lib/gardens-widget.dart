@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:my_app/capacity-info-widget.dart';
 import 'package:my_app/notification-icon-widget.dart';
-import 'package:my_app/common/gardens.dart';
 import 'package:my_app/sitemap-widget.dart';
+import 'package:my_app/common/string-utils.dart';
 import 'theme.dart';
 
 class GardensWidget extends StatelessWidget {
+  final databaseReference = FirebaseDatabase.instance.reference();
+
   @override
   Widget build(BuildContext context) {
+    List<dynamic> gardens = [];
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Gardens"),
@@ -27,10 +32,24 @@ class GardensWidget extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.separated(
-        separatorBuilder: (context, index) => Divider(),
-        itemCount: gardensList.length,
-        itemBuilder: (context, index) => GardenListItem(gardensList[index]),
+      body: StreamBuilder(
+        stream: databaseReference.child("places/gardens").onValue,
+        builder: (context, AsyncSnapshot<Event> snapshot) {
+          if (snapshot.hasData) {
+            gardens.clear();
+            DataSnapshot dataValues = snapshot.data.snapshot;
+            Map<dynamic, dynamic> values = dataValues.value;
+            values.forEach((key, value) {
+              gardens.add(value);
+            });
+            return ListView.separated(
+              separatorBuilder: (context, index) => Divider(),
+              itemCount: gardens.length,
+              itemBuilder: (context, index) => GardenListItem(gardens[index]),
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
@@ -41,7 +60,9 @@ class GardenSpotFoundDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Garden garden = getGardenLowestCapacity();
+    final databaseReference = FirebaseDatabase.instance.reference();
+
+    var garden;
 
     return AlertDialog(
       title: Text("Spot found"),
@@ -50,7 +71,25 @@ class GardenSpotFoundDialog extends StatelessWidget {
         children: [
           Text("Looks like this garden has low capacity."),
           SizedBox(height: 16),
-          GardenListItem(garden),
+          StreamBuilder(
+            stream: databaseReference
+                .child("places/gardens")
+                .orderByChild("capacity")
+                .limitToFirst(1)
+                .onValue,
+            builder: (context, AsyncSnapshot<Event> snapshot) {
+              if (snapshot.hasData) {
+                DataSnapshot dataValues = snapshot.data.snapshot;
+                Map<dynamic, dynamic> values = dataValues.value;
+                values.forEach((key, value) {
+                  garden = value;
+                });
+                print("GARDEN: " + garden.toString());
+                return GardenListItem(garden);
+              }
+              return Center(child: CircularProgressIndicator());
+            },
+          ),
         ],
       ),
       actions: [
@@ -67,6 +106,8 @@ class GardenSpotFoundDialog extends StatelessWidget {
           icon: Icon(Icons.near_me),
           onPressed: () {
             Navigator.pop(context);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SiteMapWidget(garden)));
           },
         ),
       ],
@@ -75,21 +116,21 @@ class GardenSpotFoundDialog extends StatelessWidget {
 }
 
 class GardenListItem extends StatelessWidget {
-  final Garden garden;
+  final garden;
 
   GardenListItem(this.garden);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(garden.name, style: myThemeData.textTheme.subtitle1),
-      subtitle: CapacityInfoWidget(garden.capacity),
+      title: Text(garden["name"], style: myThemeData.textTheme.subtitle1),
+      subtitle: CapacityInfoWidget(garden["capacity"]),
       leading: Container(
         width: 100,
         height: 56,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(garden.image),
+            image: AssetImage(garden["image"]),
             fit: BoxFit.fill,
           ),
         ),
@@ -104,7 +145,7 @@ class GardenListItem extends StatelessWidget {
 }
 
 class GardenInfoWidget extends StatelessWidget {
-  final Garden garden;
+  final garden;
 
   GardenInfoWidget(this.garden);
 
@@ -112,7 +153,7 @@ class GardenInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(garden.name),
+        title: Text(garden["name"]),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -128,7 +169,7 @@ class GardenInfoWidget extends StatelessWidget {
               height: 194,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(garden.image),
+                  image: AssetImage(garden["image"]),
                   fit: BoxFit.fitWidth,
                 ),
               ),
@@ -142,22 +183,22 @@ class GardenInfoWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Text(garden.name,
+                        child: Text(garden["name"],
                             style: myThemeData.textTheme.headline6),
                       ),
-                      NotificationIcon(garden.name),
+                      NotificationIcon(garden["name"].toString()),
                     ],
                   ),
                   SizedBox(height: 10),
-                  garden.description != null
-                      ? Text(garden.description,
+                  garden["description"] != null
+                      ? Text(garden["description"],
                           style: myThemeData.textTheme.caption)
                       : Container(),
                   Divider(),
                   SizedBox(height: 10),
                   Text("Capacity now:", style: myThemeData.textTheme.subtitle1),
                   SizedBox(height: 10),
-                  CapacityInfoWidget(garden.capacity),
+                  CapacityInfoWidget(garden["capacity"]),
                   SizedBox(height: 10),
                   Divider(),
                   SizedBox(height: 10),
@@ -165,7 +206,7 @@ class GardenInfoWidget extends StatelessWidget {
                     children: [
                       Icon(Icons.access_time, color: myThemeData.primaryColor),
                       SizedBox(width: 16),
-                      Text(garden.durationString(),
+                      Text(getDurationString(garden["duration"]),
                           style: myThemeData.textTheme.caption),
                     ],
                   ),
@@ -175,7 +216,7 @@ class GardenInfoWidget extends StatelessWidget {
                       Icon(Icons.directions_run,
                           color: myThemeData.primaryColor),
                       SizedBox(width: 16),
-                      Text(garden.distanceString(),
+                      Text(getDistanceString(garden["distance"]),
                           style: myThemeData.textTheme.caption),
                     ],
                   ),
@@ -192,7 +233,10 @@ class GardenInfoWidget extends StatelessWidget {
                     label: Text("GO"),
                     icon: Icon(Icons.near_me),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SiteMapWidget(garden)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SiteMapWidget(garden)));
                     },
                   ),
                 ),

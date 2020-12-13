@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:my_app/common/string-utils.dart';
 import 'package:my_app/new-event-notification-widget.dart';
-import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_app/new-place-notification-widget.dart';
-import 'package:my_app/common/notification.dart';
 import 'package:my_app/restaurantMenu-widget.dart';
 import 'theme.dart';
 
@@ -63,7 +63,7 @@ class NotificationsWidget extends StatelessWidget {
         body: TabBarView(
           children: [
             _NotificationsReceivedList(),
-            _NotificationsList(),
+            _NotificationsScheduledList(),
           ],
         ),
       ),
@@ -118,13 +118,6 @@ class NotificationsWidget extends StatelessWidget {
                                 AddEventNotificationWidget()));
                   },
                 ),
-                ListTile(
-                  leading: FaIcon(FontAwesomeIcons.university),
-                  title: Text("Exhibitions"),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
               ],
             ),
           );
@@ -133,47 +126,138 @@ class NotificationsWidget extends StatelessWidget {
 }
 
 class _NotificationsReceivedList extends StatelessWidget {
+  final databaseReference = FirebaseDatabase.instance.reference();
+
   @override
   Widget build(BuildContext context) {
-    var manager = context.watch<NotificationManager>();
+    List<dynamic> notifications = [];
 
-    return ListView.separated(
-      separatorBuilder: (context, index) => Divider(),
-      itemCount: manager.notificationsReceived.length,
-      itemBuilder: (context, index) => ListTile(
-        title: Text(manager.notificationsReceived[index].title()),
-        subtitle: Text(manager.notificationsReceived[index].subtitle()),
-        enabled: true,
-        trailing: IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () {
-            manager.removeReceived(manager.notificationsReceived[index]);
-          },
-        ),
-      ),
+    return StreamBuilder(
+      stream: databaseReference.child("notifications/received").onValue,
+      builder: (context, AsyncSnapshot<Event> snapshot) {
+        if (snapshot.hasData) {
+          notifications.clear();
+          DataSnapshot dataValues = snapshot.data.snapshot;
+          Map<dynamic, dynamic> values = dataValues.value;
+          if (values != null) {
+            values.forEach((key, value) {
+              notifications.add(value);
+            });
+          }
+
+          return ListView.separated(
+            separatorBuilder: (context, index) => Divider(),
+            itemCount: notifications.length,
+            itemBuilder: (context, index) => ListTile(
+              title: Text(notifications[index]["name"]),
+              subtitle: Text(notifications[index]["description"]),
+              enabled: true,
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  databaseReference
+                      .child("notifications/received")
+                      .orderByChild("name")
+                      .equalTo(notifications[index]["name"])
+                      .once()
+                      .then((DataSnapshot snapshot) {
+                    Map<dynamic, dynamic> values = snapshot.value;
+                    databaseReference
+                        .child("notifications/received/" +
+                            values.keys.first.toString())
+                        .remove();
+                  });
+                },
+              ),
+            ),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
 
-class _NotificationsList extends StatelessWidget {
+class _NotificationsScheduledList extends StatelessWidget {
+  final databaseReference = FirebaseDatabase.instance.reference();
+
   @override
   Widget build(BuildContext context) {
-    var manager = context.watch<NotificationManager>();
+    List<dynamic> notifications = [];
 
-    return ListView.separated(
-      separatorBuilder: (context, index) => Divider(),
-      itemCount: manager.notifications.length,
-      itemBuilder: (context, index) => ListTile(
-        title: Text(manager.notifications[index].title()),
-        subtitle: Text(manager.notifications[index].subtitle()),
-        enabled: true,
-        trailing: IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () {
-            manager.remove(manager.notifications[index]);
-          },
-        ),
-      ),
+    return StreamBuilder(
+      stream: databaseReference.child("notifications/scheduled").onValue,
+      builder: (context, AsyncSnapshot<Event> snapshot) {
+        if (snapshot.hasData) {
+          notifications.clear();
+          DataSnapshot dataValues = snapshot.data.snapshot;
+          Map<dynamic, dynamic> values = dataValues.value;
+          if (values != null) {
+            values.forEach((key, value) {
+              notifications.add(value);
+            });
+          }
+
+          return ListView.separated(
+            separatorBuilder: (context, index) => Divider(),
+            itemCount: notifications.length,
+            itemBuilder: (context, index) => ListTile(
+              title: Text(
+                  getTitle(notifications[index]["type"], notifications[index])),
+              subtitle: Text(getSubtitle(
+                  notifications[index]["type"], notifications[index])),
+              enabled: true,
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  databaseReference
+                      .child("notifications/scheduled")
+                      .orderByChild("name")
+                      .equalTo(notifications[index]["name"])
+                      .once()
+                      .then((DataSnapshot snapshot) {
+                    Map<dynamic, dynamic> values = snapshot.value;
+                    databaseReference
+                        .child("notifications/scheduled/" +
+                            values.keys.first.toString())
+                        .remove();
+                  });
+                },
+              ),
+            ),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
+  }
+
+  String getTitle(String type, dynamic notification) {
+    if (type == "place") {
+      return getNotificationPlaceTitle(notification["name"]);
+    } else if (type == "event") {
+      return getNotificationEventTitle(notification["name"]);
+    } else if (type == "eventSpecific") {
+      return getNotificationEventSpecificTitle(notification["name"]);
+    } else if (type == "dish") {
+      return getNotificationDishTitle(notification["name"]);
+    }
+    return "";
+  }
+
+  String getSubtitle(String type, dynamic notification) {
+    if (type == "place") {
+      return getNotificationPlaceSubtitle(
+          notification["from"]["hour"],
+          notification["from"]["minute"],
+          notification["to"]["hour"],
+          notification["to"]["minute"],
+          notification["capacity"]);
+    } else if (type == "event") {
+      return getNotificationEventSubtitle(notification["days"]);
+    } else if (type == "dish") {
+      return getNotificationDishSubtitle(notification["price"]);
+    }
+    return "";
   }
 }

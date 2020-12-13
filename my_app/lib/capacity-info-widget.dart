@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'theme.dart';
 
-Map<double, Color> capacityColors = {
-  0.0: Color(0xFF70E75C),
-  10.0: Color(0xFF70E75C),
-  20.0: Color(0xFFB5F64B),
-  30.0: Color(0xFFB5F64B),
-  40.0: Color(0xFFF1E91F),
-  50.0: Color(0xFFEF9935),
-  60.0: Color(0xFFEF9935),
-  70.0: Color(0xFFF45928),
-  80.0: Color(0xFFF45928),
-  90.0: Color(0xFFE40606),
-  100.0: Color(0xFFE40606),
+Map<int, Color> capacityColors = {
+  0: Color(0xFF70E75C),
+  10: Color(0xFF70E75C),
+  20: Color(0xFFB5F64B),
+  30: Color(0xFFB5F64B),
+  40: Color(0xFFF1E91F),
+  50: Color(0xFFEF9935),
+  60: Color(0xFFEF9935),
+  70: Color(0xFFF45928),
+  80: Color(0xFFF45928),
+  90: Color(0xFFE40606),
+  100: Color(0xFFE40606),
 };
 
 class CapacityInfoWidget extends StatelessWidget {
-  final double capacity;
+  final int capacity;
 
   CapacityInfoWidget(this.capacity);
 
@@ -33,9 +33,9 @@ class CapacityInfoWidget extends StatelessWidget {
     );
   }
 
-  Color getCapacityColor(double capacity) {
-    double lower = max(capacity - (capacity % 10), 0.0);
-    double higher = min(lower + 10, 100.0);
+  Color getCapacityColor(int capacity) {
+    int lower = max(capacity - (capacity % 10), 0);
+    int higher = min(lower + 10, 100);
 
     double frac = (capacity % 10) * 0.01;
 

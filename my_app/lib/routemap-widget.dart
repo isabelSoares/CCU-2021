@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/common/places.dart';
 import 'theme.dart';
 
 class RouteMapWidget extends StatelessWidget {
-  final Place place;
+  final place;
 
   RouteMapWidget(this.place);
 
@@ -11,7 +10,7 @@ class RouteMapWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(place.type),
+        title: Text(place["type"]),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -25,7 +24,7 @@ class RouteMapWidget extends StatelessWidget {
 }
 
 class RouteMapInfoWidget extends StatelessWidget {
-  final Place place;
+  final place;
 
   RouteMapInfoWidget(this.place);
 
@@ -43,12 +42,11 @@ class RouteMapInfoWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            // width: 360,
-            height: 410,
+            height: 380,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
-                  getLinkString(place.lat, place.long),
+                  getLinkString(place["latitude"], place["longitude"]),
                 ),
                 // 'https://maps.googleapis.com/maps/api/staticmap?center=38.73622228023147,-9.15344638918027&zoom=16.5&size=360x380&maptype=satellite&markers=color:red%7C38.736877563633065,-9.15316715580186&key=AIzaSyBzNhE2_nE7vzOIkb-QVIw3nr7CFaZW-YI'),
                 fit: BoxFit.fitWidth,
@@ -91,7 +89,8 @@ class RouteMapInfoWidget extends StatelessWidget {
                       Icon(Icons.access_time,
                           size: 30, color: myThemeData.primaryColor),
                       SizedBox(width: 16),
-                      Text("5 min", style: myThemeData.textTheme.headline6),
+                      Text("${place["duration"]} min",
+                          style: myThemeData.textTheme.headline6),
                     ]),
                     SizedBox(height: 20),
                     Row(
@@ -99,7 +98,8 @@ class RouteMapInfoWidget extends StatelessWidget {
                         Icon(Icons.directions_run,
                             size: 30, color: myThemeData.primaryColor),
                         SizedBox(width: 16),
-                        Text("200 m", style: myThemeData.textTheme.subtitle1),
+                        Text("${place["distance"]} m",
+                            style: myThemeData.textTheme.subtitle1),
                       ],
                     ),
                   ],

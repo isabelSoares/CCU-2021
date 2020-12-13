@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:my_app/common/notification.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:my_app/common/string-utils.dart';
 import 'package:my_app/music-widget.dart';
-
 import 'theme.dart';
+
+final List<String> eventTypes = [
+  "Orquestral",
+  "Chamber",
+  "Choral",
+  "Cinema",
+  "Contemporary",
+  "Early and Barroque",
+  "Jazz",
+  "Opera",
+  "Piano",
+  "Voice",
+  "Violin",
+  "World Music"
+];
+
+final List<int> daysOptions = [1, 2, 7, 14, 30, 60];
 
 class AddEventNotificationWidget extends StatelessWidget {
   @override
@@ -62,8 +78,10 @@ class NewTypeEventNotificationWidget extends StatefulWidget {
 
 class _NewTypeEventNotificationWidgetState
     extends State<NewTypeEventNotificationWidget> {
-  EventType _type;
-  Duration _timeFrame;
+  final databaseReference = FirebaseDatabase.instance.reference();
+
+  String _type;
+  int _days;
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +158,7 @@ class _NewTypeEventNotificationWidgetState
                                   context: context,
                                   builder: (_) => EventTimeFrameDialog(
                                         onValueChange: _onEventTimeFrameChange,
-                                        initialValue: _timeFrame,
+                                        initialValue: _days,
                                       ));
                             },
                           ),
@@ -163,15 +181,15 @@ class _NewTypeEventNotificationWidgetState
     );
   }
 
-  void _onEventTypeChange(EventType value) {
+  void _onEventTypeChange(String value) {
     setState(() {
       _type = value;
     });
   }
 
-  void _onEventTimeFrameChange(Duration value) {
+  void _onEventTimeFrameChange(int value) {
     setState(() {
-      _timeFrame = value;
+      _days = value;
     });
   }
 
@@ -181,34 +199,34 @@ class _NewTypeEventNotificationWidgetState
           style: myThemeData.textTheme.bodyText1
               .merge(TextStyle(color: Color(0x36000000))));
     } else {
-      return Text(getEventType(_type), style: myThemeData.textTheme.bodyText1);
+      return Text(_type, style: myThemeData.textTheme.bodyText1);
     }
   }
 
   Widget _getEventTimeFrameText() {
-    if (_timeFrame == null) {
+    if (_days == null) {
       return Text("Choose time frame",
           style: myThemeData.textTheme.bodyText1
               .merge(TextStyle(color: Color(0x36000000))));
     } else {
-      return Text(getTimeFrameString(_timeFrame),
+      return Text(getTimeFrameString(_days),
           style: myThemeData.textTheme.bodyText1);
     }
   }
 
   Widget _doneButton(BuildContext context) {
-    var manager = context.watch<NotificationManager>();
-
     return RaisedButton.icon(
       textColor: Colors.white,
       label: Text("DONE"),
       icon: Icon(Icons.check),
       onPressed: () {
-        manager.add(NotificationEvent(
-          getEventType(_type),
-          _type,
-          _timeFrame,
-        ));
+        DatabaseReference itemRef =
+            databaseReference.child("notifications/scheduled").push();
+        itemRef.set({
+          "type": "event",
+          "name": _type,
+          "days": _days,
+        });
         Navigator.pop(context);
       },
     );
@@ -216,8 +234,8 @@ class _NewTypeEventNotificationWidgetState
 }
 
 class EventTypeDialog extends StatefulWidget {
-  final EventType initialValue;
-  final void Function(EventType) onValueChange;
+  final String initialValue;
+  final void Function(String) onValueChange;
 
   const EventTypeDialog({this.initialValue, this.onValueChange});
 
@@ -227,7 +245,7 @@ class EventTypeDialog extends StatefulWidget {
 }
 
 class _EventTypeDialogState extends State<EventTypeDialog> {
-  EventType _selectedType;
+  String _selectedType;
 
   @override
   void initState() {
@@ -259,12 +277,12 @@ class _EventTypeDialogState extends State<EventTypeDialog> {
   List<Widget> getRadioTypeList() {
     List<Widget> radioItems = [];
 
-    EventType.values.forEach((element) {
-      RadioListTile item = RadioListTile<EventType>(
-        title: Text(getEventType(element)),
+    eventTypes.forEach((element) {
+      RadioListTile item = RadioListTile<String>(
+        title: Text(element),
         value: element,
         groupValue: _selectedType,
-        onChanged: (EventType value) {
+        onChanged: (String value) {
           setState(() {
             _selectedType = value;
             widget.onValueChange(value);
@@ -281,8 +299,8 @@ class _EventTypeDialogState extends State<EventTypeDialog> {
 }
 
 class EventTimeFrameDialog extends StatefulWidget {
-  final Duration initialValue;
-  final void Function(Duration) onValueChange;
+  final int initialValue;
+  final void Function(int) onValueChange;
 
   const EventTimeFrameDialog({this.initialValue, this.onValueChange});
 
@@ -292,12 +310,12 @@ class EventTimeFrameDialog extends StatefulWidget {
 }
 
 class _EventTimeFrameDialogState extends State<EventTimeFrameDialog> {
-  Duration _selectedTimeFrame;
+  int _selectedDays;
 
   @override
   void initState() {
     super.initState();
-    _selectedTimeFrame = widget.initialValue;
+    _selectedDays = widget.initialValue;
   }
 
   @override
@@ -324,14 +342,14 @@ class _EventTimeFrameDialogState extends State<EventTimeFrameDialog> {
   List<Widget> getRadioTimeFrameList() {
     List<Widget> radioItems = [];
 
-    timeFrameMap.keys.forEach((element) {
-      RadioListTile item = RadioListTile<Duration>(
-        title: Text(element),
-        value: timeFrameMap[element],
-        groupValue: _selectedTimeFrame,
-        onChanged: (Duration value) {
+    daysOptions.forEach((element) {
+      RadioListTile item = RadioListTile<int>(
+        title: Text(getTimeFrameString(element)),
+        value: element,
+        groupValue: _selectedDays,
+        onChanged: (int value) {
           setState(() {
-            _selectedTimeFrame = value;
+            _selectedDays = value;
             widget.onValueChange(value);
             Navigator.pop(context);
           });

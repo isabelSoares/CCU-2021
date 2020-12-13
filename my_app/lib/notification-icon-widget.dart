@@ -1,47 +1,97 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/common/notification.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:my_app/common/session.dart';
 import 'package:my_app/new-place-notification-widget.dart';
-import 'package:provider/provider.dart';
 
 class NotificationIcon extends StatelessWidget {
   final String name;
+  final databaseReference = FirebaseDatabase.instance.reference();
 
   NotificationIcon(this.name);
   @override
   Widget build(BuildContext context) {
-    var manager = context.watch<NotificationManager>();
-    bool hasNotification = manager.hasNotification(name);
+    return StreamBuilder(
+      stream: databaseReference
+          .child("notifications/scheduled")
+          .orderByChild("name")
+          .equalTo(name)
+          .onValue,
+      builder: (context, AsyncSnapshot<Event> snapshot) {
+        if (snapshot.hasData) {
+          DataSnapshot dataValues = snapshot.data.snapshot;
+          Map<dynamic, dynamic> values = dataValues.value;
 
-    return hasNotification
-        ? IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              manager.togglePlaceNotification(name);
-            },
-          )
-        : IconButton(
-            icon: Icon(Icons.notifications_none),
-            onPressed: () {
-              manager.togglePlaceNotification(name);
-              if (!manager.dontShowDialog) {
-                showDialog(
-                    context: context,
-                    builder: (_) => NotificationAddedDialog(name));
-              }
-            },
-          );
+          if (values != null) {
+            return IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                databaseReference
+                    .child("notifications/scheduled/" +
+                        values.keys.first.toString())
+                    .remove();
+              },
+            );
+          } else {
+            return IconButton(
+              icon: Icon(Icons.notifications_none),
+              onPressed: () {
+                DatabaseReference itemRef =
+                    databaseReference.child("notifications/scheduled").push();
+                itemRef.set({
+                  "type": "place",
+                  "name": name,
+                  "from": {"hour": 9, "minute": 0},
+                  "to": {"hour": 18, "minute": 0},
+                  "capacity": 50
+                });
+                if (!dontShowDialog) {
+                  showDialog(
+                      context: context,
+                      builder: (_) => NotificationAddedDialog(name));
+                }
+              },
+            );
+          }
+        }
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+
+    // hasNotification
+    //     ? IconButton(
+    //         icon: Icon(Icons.notifications),
+    //         onPressed: () {
+    //           manager.togglePlaceNotification(name);
+    //         },
+    //       )
+    //     : IconButton(
+    //         icon: Icon(Icons.notifications_none),
+    //         onPressed: () {
+    //           manager.togglePlaceNotification(name);
+    //           if (!manager.dontShowDialog) {
+    //             showDialog(
+    //                 context: context,
+    //                 builder: (_) => NotificationAddedDialog(name));
+    //           }
+    //         },
+    //       );
   }
 }
 
-class NotificationAddedDialog extends StatelessWidget {
+class NotificationAddedDialog extends StatefulWidget {
   final String name;
-
   NotificationAddedDialog(this.name);
+
+  State<StatefulWidget> createState() {
+    return _NotificationAddedDialogState();
+  }
+}
+
+class _NotificationAddedDialogState extends State<NotificationAddedDialog> {
+  bool _dontShowDialog = dontShowDialog;
 
   @override
   Widget build(BuildContext context) {
-    var manager = context.watch<NotificationManager>();
-
     return AlertDialog(
       title: Text("Notification added"),
       content: Column(
@@ -55,11 +105,14 @@ class NotificationAddedDialog extends StatelessWidget {
           SizedBox(height: 16),
           CheckboxListTile(
             title: Text("Don’t show this again"),
-            value: manager.dontShowDialog,
+            value: dontShowDialog,
             dense: true,
             contentPadding: EdgeInsets.zero,
             onChanged: (value) {
-              manager.setDontShowDialog(value);
+              setState(() {
+                _dontShowDialog = value;
+                dontShowDialog = value;
+              });
             },
             controlAffinity: ListTileControlAffinity.leading,
           )
@@ -82,7 +135,8 @@ class NotificationAddedDialog extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => NewPlaceNotificationWidget(name)));
+                    builder: (context) =>
+                        NewPlaceNotificationWidget(widget.name)));
           },
         ),
       ],

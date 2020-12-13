@@ -1,57 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/common/gardens.dart';
-import 'package:my_app/common/places.dart';
-import 'package:provider/provider.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:date_format/date_format.dart';
-import 'package:my_app/common/notification.dart';
-
 import 'theme.dart';
 
 class AddPlaceNotificationWidget extends StatelessWidget {
+  final databaseReference = FirebaseDatabase.instance.reference();
+
   @override
   Widget build(BuildContext context) {
-    List<Widget> listItems = [
-      Container(
-        padding: EdgeInsets.all(16),
-        child: Text("Choose a place:", style: myThemeData.textTheme.headline6),
-      ),
-    ];
-
-    for (Garden garden in gardensList) {
-      ListTile item = ListTile(
-        title: Text(garden.name),
-        trailing: Icon(Icons.chevron_right),
-        enabled: true,
-        onTap: () {
-          Navigator.pop(context);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      NewPlaceNotificationWidget(garden.name)));
-        },
-      );
-
-      listItems.add(item);
-    }
-
-    for (Place place in placesList) {
-      ListTile item = ListTile(
-        title: Text(place.type),
-        trailing: Icon(Icons.chevron_right),
-        enabled: true,
-        onTap: () {
-          Navigator.pop(context);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      NewPlaceNotificationWidget(place.type)));
-        },
-      );
-
-      listItems.add(item);
-    }
+    List<dynamic> places = [];
 
     return Scaffold(
       appBar: AppBar(
@@ -63,7 +20,52 @@ class AddPlaceNotificationWidget extends StatelessWidget {
           },
         ),
       ),
-      body: ListView(children: listItems),
+      body: StreamBuilder(
+        stream: databaseReference.child("places/").onValue,
+        builder: (context, AsyncSnapshot<Event> snapshot) {
+          if (snapshot.hasData) {
+            DataSnapshot dataValues = snapshot.data.snapshot;
+            Map<dynamic, dynamic> values = dataValues.value;
+            values.forEach((key, value) {
+              if (key == "gardens") {
+                Map<dynamic, dynamic>.from(value).forEach((key, value) {
+                  places.add(value["name"]);
+                });
+              } else {
+                places.add(value["type"]);
+              }
+            });
+
+            List<Widget> listItems = [
+              Container(
+                padding: EdgeInsets.all(16),
+                child: Text("Choose a place:",
+                    style: myThemeData.textTheme.headline6),
+              ),
+            ];
+
+            for (String item in places) {
+              ListTile tile = ListTile(
+                title: Text(item),
+                trailing: Icon(Icons.chevron_right),
+                enabled: true,
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              NewPlaceNotificationWidget(item)));
+                },
+              );
+
+              listItems.add(tile);
+            }
+            return ListView(children: listItems);
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }
@@ -79,6 +81,8 @@ class NewPlaceNotificationWidget extends StatefulWidget {
 
 class _NewPlaceNotificationWidgetState
     extends State<NewPlaceNotificationWidget> {
+  final databaseReference = FirebaseDatabase.instance.reference();
+
   TimeOfDay _selectedTimeFrom = TimeOfDay(hour: 9, minute: 00);
   TimeOfDay _selectedTimeTo = TimeOfDay(hour: 18, minute: 00);
 
@@ -246,23 +250,56 @@ class _NewPlaceNotificationWidgetState
   }
 
   Widget _doneButton(BuildContext context) {
-    var manager = context.watch<NotificationManager>();
+    // var manager = context.watch<NotificationManager>();
 
     return RaisedButton.icon(
       textColor: Colors.white,
       label: Text("DONE"),
       icon: Icon(Icons.check),
       onPressed: () {
-        if (manager.hasNotification(widget.place)) {
-          manager.togglePlaceNotification(widget.place);
-        }
+        databaseReference
+            .child("notifications/scheduled")
+            .orderByChild("name")
+            .equalTo(widget.place)
+            .once()
+            .then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic> values = snapshot.value;
 
-        manager.add(NotificationPlace(
-          widget.place,
-          _selectedTimeFrom,
-          _selectedTimeTo,
-          _currentSliderValue,
-        ));
+          if (values == null) {
+            DatabaseReference itemRef =
+                databaseReference.child("notifications/scheduled").push();
+            itemRef.set({
+              "type": "place",
+              "name": widget.place,
+              "from": {
+                "hour": _selectedTimeFrom.hour,
+                "minute": _selectedTimeFrom.minute
+              },
+              "to": {
+                "hour": _selectedTimeTo.hour,
+                "minute": _selectedTimeTo.minute
+              },
+              "capacity": _currentSliderValue.toInt()
+            });
+          } else {
+            databaseReference
+                .child(
+                    "notifications/scheduled/" + values.keys.first.toString())
+                .update({
+              "type": "place",
+              "name": widget.place,
+              "from": {
+                "hour": _selectedTimeFrom.hour,
+                "minute": _selectedTimeFrom.minute
+              },
+              "to": {
+                "hour": _selectedTimeTo.hour,
+                "minute": _selectedTimeTo.minute
+              },
+              "capacity": _currentSliderValue.toInt()
+            });
+          }
+        });
 
         Navigator.pop(context);
       },

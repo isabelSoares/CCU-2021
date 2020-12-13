@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "742423762356",
+    "project_id": "livingulbenkian",
+    "storage_bucket": "livingulbenkian.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742423762356:android:00d0a7104221ee36e88ee1",
+        "android_client_info": {
+          "package_name": "com.prototypes.livingulbenkian"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742423762356-mk5jsf9ud1n98m528ge5ie5qr1qabuq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6D7upceMzwuKRFkTlCeOpQXAF-UlBUOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742423762356-mk5jsf9ud1n98m528ge5ie5qr1qabuq9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

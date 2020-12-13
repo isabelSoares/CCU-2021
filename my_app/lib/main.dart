@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/common/notification.dart';
-import 'package:provider/provider.dart';
-import 'home-widget.dart';
+import 'package:my_app/home-widget.dart';
 import 'theme.dart';
 
 void main() {
@@ -9,16 +7,12 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => NotificationManager(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: myThemeData,
-        home: HomeWidget(),
-      ),
+    return MaterialApp(
+      title: 'LivinGulbenkian',
+      theme: myThemeData,
+      home: HomeWidget(),
     );
   }
 }
